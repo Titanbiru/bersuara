@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
-    <link rel="stylesheet" href="posts-1.css">
+    <link rel="stylesheet" href="css/posts-1.css">
 </head>
 <body>
     <h2>Create a Post</h2>

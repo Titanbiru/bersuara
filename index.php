@@ -41,19 +41,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Media</title>
-    <link rel="stylesheet" href="index-1.css">
+    <link rel="stylesheet" href="css/index-2.css">
 </head>
 <body>
     <h1>Social Media Posts</h1>
-
     <!-- Formulir untuk membuat postingan baru -->
     <?php if (isset($_SESSION['user_id'])): ?>
-    <form method="POST">
+    <form method="POST" class="">
         <textarea name="text" placeholder="What's on your mind?" required></textarea>
         <button type="submit">Post</button>
     </form>
-    <?php else: ?>
-    <p>Please <a href="login.php">log in</a> or <a href="register.php">register</a> to post.</p>
-    <?php endif; ?>
+    <div class="container">
+        <h1></h1>
+        <?php else: ?>
+            <div class="login_and_register">
+        <p>Please <a href="login.php">log in</a> or <a href="register.php">register</a> to Bersuara.</p></div>
+        <?php endif; ?>
+    </div>
 </body>
 </html>
