@@ -47,10 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Social Media Posts</h1>
     <!-- Formulir untuk membuat postingan baru -->
     <?php if (isset($_SESSION['user_id'])): ?>
-    <form method="POST" class="">
-        <textarea name="text" placeholder="What's on your mind?" required></textarea>
-        <button type="submit">Post</button>
-    </form>
     <div class="container">
         <h1></h1>
         <?php else: ?>
