@@ -87,6 +87,5 @@ $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
     <p><a href="logout.php">Logout</a></p>
 
     <?php include "layout/footer.html"?>
-    
 </body>
 </html>
