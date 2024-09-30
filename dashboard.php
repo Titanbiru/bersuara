@@ -19,24 +19,23 @@ $statement->execute([$user_id]);
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 
 // Ambil semua postingan
-$query = "SELECT posts.id, posts.text, posts.created_at, users.username, users.full_name, posts.media FROM posts JOIN users ON posts.user_id = users.id ORDER BY posts.created_at DESC";
+    $query = "SELECT id, password FROM users WHERE username = ?";
 $statement = $pdo->prepare($query);
-$statement->execute();
-$posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+$statement->execute([$username]);
+$user = $statement->fetch(PDO::FETCH_ASSOC);
 
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/dashboard-1.css">
-</head>
-<body>
-    <?php include "layout/header.html"?>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="css/dashboard-1.css">
+    </head>
+    <body>
 
     <!-- <h1>Welcome, <?php echo htmlspecialchars($user['username']); ?>!</h1> -->
 

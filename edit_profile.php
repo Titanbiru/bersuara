@@ -10,10 +10,6 @@ if (!isset($_SESSION['user_id'])) {
 
 // Ambil informasi pengguna dari database
 $user_id = $_SESSION['user_id'];
-$query = "SELECT username, email, bio, full_name FROM users WHERE id = ?";
-$statement = $pdo->prepare($query);
-$statement->execute([$user_id]);
-$user = $statement->fetch(PDO::FETCH_ASSOC);
 
 // Proses jika formulir disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/edit_profile.css">
 </head>
 <body>
+
     <h1>Edit Profile</h1>
 
     <?php if (isset($_SESSION['update_success'])): ?>
