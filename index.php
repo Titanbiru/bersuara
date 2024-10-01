@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/index-2.css">
 </head>
 <body>
+<<<<<<< HEAD
     <div class="container">
         <h1>Welcome to Social Media</h1>
             <p>Please</p>
@@ -55,4 +56,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
         </div>
     </body>
+=======
+    <div class="card">
+            <h1>Social Media Posts</h1>
+            <img src="citra.png" alt="image.description" width="200" style="display: block; margin: 0 auto;">
+            <p>Web bersuara, atau aplikasi web yang menggunakan suara, memiliki berbagai kegunaan yang bermanfaat.</p>
+            
+        <?php if (isset($_SESSION['user_id'])): ?>
+        <div class="container">
+            <h1></h1>
+            <?php else: ?>
+                <div class="login_and_register">
+            <p>Please <a href="login.php">log in</a> or <a href="register.php">register</a> to Bersuara.</p></div>
+            <?php endif; ?>
+        </div>
+    </div>  
+</body>
+>>>>>>> 2ed4663fd480a6b2548ac39791d2d6c9fe056c07
 </html>

@@ -19,11 +19,10 @@ $statement->execute([$user_id]);
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 
 // Ambil semua postingan
-    $query = "SELECT id, password FROM users WHERE username = ?";
+$query = "SELECT posts.id, posts.text, posts.created_at, users.username, users.full_name, posts.media FROM posts JOIN users ON posts.user_id = users.id ORDER BY posts.created_at DESC";
 $statement = $pdo->prepare($query);
-$statement->execute([$username]);
-$user = $statement->fetch(PDO::FETCH_ASSOC);
-
+$statement->execute();
+$posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
