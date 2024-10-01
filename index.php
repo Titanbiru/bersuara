@@ -44,15 +44,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/index-2.css">
 </head>
 <body>
-    <h1>Social Media Posts</h1>
-    <!-- Formulir untuk membuat postingan baru -->
-    <?php if (isset($_SESSION['user_id'])): ?>
-    <div class="container">
-        <h1></h1>
-        <?php else: ?>
-            <div class="login_and_register">
-        <p>Please <a href="login.php">log in</a> or <a href="register.php">register</a> to Bersuara.</p></div>
-        <?php endif; ?>
-    </div>
+    <div class="card">
+            <h1>Social Media Posts</h1>
+            <img src="citra.png" alt="image.description" width="200" style="display: block; margin: 0 auto;">
+            <p>Web bersuara, atau aplikasi web yang menggunakan suara, memiliki berbagai kegunaan yang bermanfaat.</p>
+            
+        <?php if (isset($_SESSION['user_id'])): ?>
+        <div class="container">
+            <h1></h1>
+            <?php else: ?>
+                <div class="login_and_register">
+            <p>Please <a href="login.php">log in</a> or <a href="register.php">register</a> to Bersuara.</p></div>
+            <?php endif; ?>
+        </div>
+    </div>  
 </body>
 </html>
