@@ -44,19 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/index-2.css">
 </head>
 <body>
-<<<<<<< HEAD
-    <div class="container">
-        <h1>Welcome to Social Media</h1>
-            <p>Please</p>
-            <div class="login_and_register">
-                <a href="login.php">Login</a>
-                <p>or</p>
-                <a href="register.php">Register</a> to Bersuara
-            </div>
-            <?php endif; ?>
-        </div>
-    </body>
-=======
     <div class="card">
             <h1>Social Media Posts</h1>
             <img src="citra.png" alt="image.description" width="200" style="display: block; margin: 0 auto;">
@@ -72,5 +59,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>  
 </body>
->>>>>>> 2ed4663fd480a6b2548ac39791d2d6c9fe056c07
 </html>
