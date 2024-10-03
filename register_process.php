@@ -17,17 +17,17 @@ $password = $_POST['password'];
 $confirm_password = $_POST['confirm_password'];
 
 // Validasi data
-// if (empty($username) || empty($password) || empty($email) || empty($confirm_password)) {
-//     $_SESSION['register_error'] = "All fields are required.";
-//     header("Location: register.php");
-//     exit();
-// }
+if (empty($username) || empty($password) || empty($email) || empty($confirm_password)) {
+    $_SESSION['register_error'] = "All fields are required.";
+    header("Location: register.php");
+    exit();
+}
 
-// if ($password !== $confirm_password) {
-//     $_SESSION['register_error'] = "Passwords do not match.";
-//     header("Location: register.php");
-//     exit();
-// }
+if ($password !== $confirm_password) {
+    $_SESSION['register_error'] = "Passwords do not match.";
+    header("Location: register.php");
+    exit();
+}
 
 // Periksa apakah username sudah ada
 $query = "SELECT id FROM users WHERE username = ?";

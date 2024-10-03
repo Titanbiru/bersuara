@@ -23,20 +23,18 @@ $query = "SELECT posts.id, posts.text, posts.created_at, users.username, users.f
 $statement = $pdo->prepare($query);
 $statement->execute();
 $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/dashboard-1.css">
-</head>
-<body>
-    <?php include "layout/header.html"?>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="css/dashboard-1.css">
+    </head>
+    <body>
 
     <!-- <h1>Welcome, <?php echo htmlspecialchars($user['username']); ?>!</h1> -->
 

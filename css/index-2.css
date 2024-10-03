@@ -1,0 +1,38 @@
+<<<<<<< HEAD
+=======
+body {
+    background-color: #46315C; 
+    color: #463;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #8D769A;
+    text-align: center;
+}
+
+p {
+    color: #ba68c8;
+    text-decoration: none;
+}
+
+p:hover {
+    color: #9c27b0;
+    text-decoration: none;
+}
+
+.card {
+    background-color: #e1bee7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    color: #4a148c;
+}
+
+.card p {
+    color: #6a1b9a;
+}
+>>>>>>> 7a2aad6d7a3201a474168e7c7bf3201cda548429
