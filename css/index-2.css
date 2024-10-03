@@ -1,22 +1,19 @@
 body {
-    background-color: #46315C; 
+    background-color: #7f2092;
     color: #463;
     font-family: Arial, sans-serif;
 }
 
 h1 {
-    color: #8D769A;
+    color: #ffffff;
     text-align: center;
+    font-family: Arial, sans-serif;
 }
 
 p {
-    color: #ba68c8;
-    text-decoration: none;
-}
-
-p:hover {
-    color: #9c27b0;
-    text-decoration: none;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: center;
 }
 
 .card {
@@ -26,10 +23,10 @@ p:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.card h3 {
+.card h1 {
     color: #4a148c;
 }
 
 .card p {
-    color: #6a1b9a;
+    color: #6a1b9a;
 }
