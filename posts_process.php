@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) {
         die("Please log in to post.");
     }
-
+    
     $text = $_POST['text'];
     $user_id = $_SESSION['user_id'];
     $media = null;

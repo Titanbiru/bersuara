@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #46315c;
+}
+
+.container {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #8d769a;
+    border: 1px solid #7200f5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #c333;
+}
+
+
+.login-form {
+    width: 100%;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.login-form h2 {
+    margin-top: 0;
+}
+
+
+p {
+    text-align: center;
+    margin-top: 15px;
+}
+
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline; 
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #ffff;
+    text-align: left;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #68507b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #46315c; 
+}
+.error{
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}

@@ -11,30 +11,22 @@ session_start();
 
 // Ambil data dari formulir pendaftaran
 $username = $_POST['username'];
+$email = $_POST['email'];  // Ambil email dari form
 $password = $_POST['password'];
 
-
-$confirm_password = $_POST['confirm_password'];
-
 // Validasi data
-if (empty($username) || empty($password) || empty($email) || empty($confirm_password)) {
+if (empty($username) || empty($password) || empty($email)) {
     $_SESSION['register_error'] = "All fields are required.";
     header("Location: register.php");
     exit();
 }
 
-if ($password !== $confirm_password) {
-    $_SESSION['register_error'] = "Passwords do not match.";
-    header("Location: register.php");
-    exit();
-}
-
-// Periksa apakah username sudah ada
-$query = "SELECT id FROM users WHERE username = ?";
+// Periksa apakah username atau email sudah ada
+$query = "SELECT id FROM users WHERE username = ? OR email = ?";
 $statement = $pdo->prepare($query);
-$statement->execute([$username]);
+$statement->execute([$username, $email]);
 if ($statement->fetch(PDO::FETCH_ASSOC)) {
-    $_SESSION['register_error'] = "Username already taken.";
+    $_SESSION['register_error'] = "Username or email already taken.";
     header("Location: register.php");
     exit();
 }
@@ -43,10 +35,10 @@ if ($statement->fetch(PDO::FETCH_ASSOC)) {
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
 // Sisipkan pengguna baru ke database
-$query = "INSERT INTO users (username, password) VALUES (?, ?)";
+$query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
 $statement = $pdo->prepare($query);
 
-if ($statement->execute([$username, $hashed_password])) {
+if ($statement->execute([$username, $email, $hashed_password])) {
     $_SESSION['register_success'] = "Registration successful! You can now log in.";
     header("Location: dashboard.php");
     exit();

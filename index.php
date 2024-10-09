@@ -42,21 +42,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Media</title>
     <link rel="stylesheet" href="css/index-2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <h1></h1>
+        <?php else: ?>
+            <div class="login_and_register">
+            <a href="login.php">Log In</a>
+            <a href="register.php">Register</a>
+        </div>
+        <?php endif; ?>
     <div class="card">
             <h1>Social Media Posts</h1>
-            <img src="citra.png" alt="image.description" width="200" style="display: block; margin: 0 auto;">
+            <img src="cn logo.png" alt="image.description" width="200" style="display: block; margin: 0 auto;">
+            <br>
             <p>Web bersuara, atau aplikasi web yang menggunakan suara, memiliki berbagai kegunaan yang bermanfaat.</p>
-            
-        <?php if (isset($_SESSION['user_id'])): ?>
-        <div class="container">
-            <h1></h1>
-            <?php else: ?>
-                <div class="login_and_register">
-            <p>Please <a href="login.php">log in</a> or <a href="register.php">register</a> to Bersuara.</p></div>
-            <?php endif; ?>
-        </div>
     </div>  
 </body>
 </html>
