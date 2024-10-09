@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="css/edit_profile2.css">
+    <link rel="stylesheet" href="css/edit_profile4.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
