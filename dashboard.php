@@ -85,23 +85,98 @@ foreach ($posts as $post) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="css/dashboard-1.css">
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
 </head>
 <body>
 
-<h1>Welcome, 
+<nav class="sidebar locked">
+      <div class="logo_items flex">
+        <span class="nav_image">
+          <img src="CN.jpg" alt="logo_img" />
+        </span>
+        <span class="logo_name">Bersuara</span>
+        <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
+        <i class="bx bx-x" id="sidebar-close"></i>
+      </div>
+
+      <div class="menu_container">
+        <div class="menu_items">
+          <ul class="menu_item">
+            <div class="menu_title flex">
+              <span class="title">Menu</span>
+              <span class="line"></span>
+            </div>
+            <li class="item">
+              <a href="dashboard.php" class="link flex">
+                <i class="bx bx-home-alt"></i>
+                <span>Home</span>
+              </a>
+            </li>
+            <li class="item">
+              <a href="posts-form.php" class="link flex">
+                <i class="bx bx-cloud-upload"></i>
+                <span>Upload New</span>
+              </a>
+            </li>
+            <li class="item">
+                <a href="edit_profile.php" class="link flex">
+                  <i class="bx bxs-edit"></i>
+                  <span>Edit Profile</span>
+                </a>
+              </li>
+              <li class="item">
+                <a href="#" class="link flex">
+                  <i class="bx bx-log-out"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
+          </ul>
+        </div>
+
+        <div class="sidebar_profile flex">
+          <span class="nav_image">
+            <img src="PFP.jfif" alt="logo_img" />
+          </span>
+          <div class="data_text">
+            <span class="name">Pramodya</span>
+            <span class="email">ppp@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Navbar -->
+    <nav class="navbar flex">
+      <i class="bx bx-menu" id="sidebar-open"></i>
+      <span><h1><b>Bersuara</b></h1></span>
+      <span class="nav_image">
+        <img src="CN.jpg" alt="logo_img" />
+      </span>
+    </nav>
+
+    <br><br><br>
+
+    <center>
+    <span style="color: white;">
+    <h1>Welcome, 
 <?php 
     if (!empty($user['full_name'])) {
         echo htmlspecialchars($user['full_name']);
     } else {
         echo htmlspecialchars($user['username']);
     } 
-?>! You are logged in.
-</h1>
+    ?>! You are logged in.
+    </h1>
+    <br><br>
+    <h2>Your Posts</h2>
+</span>
+</center>
 
-<h2>Your Posts</h2>
 <div id="post-container">
     <?php foreach ($posts as $post): ?>
         <div class="post">
+            <!-- Nama dan waktu postingan -->
             <p><strong><?php 
                     if (!empty($post['full_name'])) {
                         echo htmlspecialchars($post['full_name']); 
@@ -110,7 +185,7 @@ foreach ($posts as $post) {
                     }
                     ?></strong> - <?php echo htmlspecialchars($post['created_at']); ?></p>
 
-            <p><?php echo htmlspecialchars($post['text']); ?></p>
+            <!-- Media seperti gambar atau video -->
             <?php if (!empty($post['media'])) {
                 $filePath = "./uploads/" . htmlspecialchars($post['media']);
                 
@@ -132,19 +207,33 @@ foreach ($posts as $post) {
                 }
             }
             ?>
+
+<br>
+
+            <!-- Pindahkan deskripsi di sini, di bawah media -->
+            <p><?php echo htmlspecialchars($post['text']); ?></p>
+
             <p>Likes: <?php echo htmlspecialchars($post['like_count']); ?> | Dislikes: <?php echo htmlspecialchars($post['dislike_count']); ?></p>
             <form method="POST" action="dashboard.php">
                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                <button type="submit" name="action" value="like">Like</button>
-                <button type="submit" name="action" value="dislike">Dislike</button>
+                <button type="submit" name="action" value="like">
+                  <i class='bx bxs-like'></i>
+                </button>
+                <button type="submit" name="action" value="dislike">
+                <i class='bx bxs-dislike' ></i>
+                </button>
             </form>
+
+            <br>
 
             <div>
                 <p>Comments:</p>
                 <form method="POST" action="dashboard.php">
                     <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                     <input type="text" name="comment_text" placeholder="Add a comment...">
-                    <button type="submit">Submit</button>
+                    <button type="submit">
+                    <i class='bx bxs-send' ></i>
+                    </button>
                 </form>
                 <div class="comments">
                     <?php foreach ($comments[$post['id']] as $comment): ?>
@@ -152,14 +241,14 @@ foreach ($posts as $post) {
                     <?php endforeach; ?>
                 </div>
             </div>
-            <button class="share-btn" data-url="post.php?id=<?php echo $post['id']; ?>">Share</button>
+            <br>
+            <button class="share-btn" data-url="post.php?id=<?php echo $post['id']; ?>">
+            <i class='bx bxs-share'></i>
+            </button>
         </div>
     <?php endforeach; ?>
 </div>
 
-<a href="edit_profile.php">Edit Profile</a>
-<p><a href="posts-form.php">Create a New Post</a></p>
-<p><a href="logout.php">Logout</a></p>
 
 <?php include "layout/footer.html" ?>
 <script>

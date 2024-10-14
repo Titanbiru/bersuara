@@ -1,8 +1,305 @@
+/* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
-body{
-    background-color: rgb(219, 106, 30);
+body {
+  min-height: 100vh;
+  background: #947CAC;
 }
+/* Pre css */
+.flex {
+  display: flex;
+  align-items: center;
+}
+.nav_image {
+  display: flex;
+  min-width: 55px;
+  justify-content: center;
+}
+.nav_image img {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 270px;
+  background: #fff;
+  padding: 15px 10px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+}
+.sidebar.close {
+  width: calc(55px + 20px);
+}
+.logo_items {
+  gap: 8px;
+}
+.logo_name {
+  font-size: 22px;
+  color: #333;
+  font-weight: 500px;
+  transition: all 0.3s ease;
+}
+.sidebar.close .logo_name,
+.sidebar.close #lock-icon,
+.sidebar.close #sidebar-close {
+  opacity: 0;
+  pointer-events: none;
+}
+#lock-icon,
+#sidebar-close {
+  padding: 10px;
+  color: #4070f4;
+  font-size: 25px;
+  cursor: pointer;
+  margin-left: -4px;
+  transition: all 0.3s ease;
+}
+#sidebar-close {
+  display: none;
+  color: #333;
+}
+.menu_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 40px;
+  overflow-y: auto;
+  height: calc(100% - 82px);
+}
+.menu_container::-webkit-scrollbar {
+  display: none;
+}
+.menu_title {
+  position: relative;
+  height: 50px;
+  width: 55px;
+}
+.menu_title .title {
+  margin-left: 15px;
+  transition: all 0.3s ease;
+}
+.sidebar.close .title {
+  opacity: 0;
+}
+.menu_title .line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 3px;
+  width: 20px;
+  border-radius: 25px;
+  background: #aaa;
+  transition: all 0.3s ease;
+}
+.menu_title .line {
+  opacity: 0;
+}
+.sidebar.close .line {
+  opacity: 1;
+}
+.item {
+  list-style: none;
+}
+.link {
+  text-decoration: none;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #707070;
+}
+.link:hover {
+  color: #fff;
+  background-color: #4070f4;
+}
+.link span {
+  white-space: nowrap;
+}
+.link i {
+  height: 50px;
+  min-width: 55px;
+  display: flex;
+  font-size: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.sidebar_profile {
+  padding-top: 15px;
+  margin-top: 15px;
+  gap: 15px;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+.sidebar_profile .name {
+  font-size: 18px;
+  color: #333;
+}
+.sidebar_profile .email {
+  font-size: 15px;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  max-width: 500px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 60%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 10px 20px;
+  border-radius: 0 0 8px 8px;
+  justify-content: space-between;
+}
+#sidebar-open {
+  font-size: 30px;
+  color: #333;
+  cursor: pointer;
+  margin-right: 20px;
+  display: none;
+}
+
+.navbar img {
+  height: 40px;
+  width: 40px;
+  margin-left: 20px;
+}
+
+.bersuara_font{
+  font-size: 30px;
+}
+/* Responsive */
+@media screen and (max-width: 1100px) {
+  .navbar {
+    left: 65%;
+  }
+}
+@media screen and (max-width: 800px) {
+  .sidebar {
+    left: 0;
+    z-index: 1000;
+  }
+  .sidebar.close {
+    left: -100%;
+  }
+  #sidebar-close {
+    display: block;
+  }
+  #lock-icon {
+    display: none;
+  }
+  .navbar {
+    left: 0;
+    max-width: 100%;
+    transform: translateX(0%);
+  }
+  #sidebar-open {
+    display: block;
+  }
+}
+
+/* Gaya dasar untuk semua tombol */
+button {
+    background-color: #e0e0e0; /* Warna dasar */
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover efek animasi */
+button:hover {
+    transform: scale(1.05); /* Sedikit memperbesar saat dihover */
+}
+
+/* Button like dengan warna hijau */
+button[value="like"] {
+    background-color: #d4f4d2; /* Warna dasar hijau terang */
+}
+
+button[value="like"]:hover {
+    background-color: #28a745; /* Hijau gelap pada hover */
+    color: white;
+}
+
+/* Button dislike dengan warna merah */
+button[value="dislike"] {
+    background-color: #f4d2d2; /* Warna dasar merah terang */
+}
+
+button[value="dislike"]:hover {
+    background-color: #dc3545; /* Merah gelap pada hover */
+    color: white;
+}
+
+/* Button share dengan warna biru */
+button.share-btn {
+    background-color: #d2e4f4; /* Warna dasar biru terang */
+}
+
+button.share-btn:hover {
+    background-color: #007bff; /* Biru gelap pada hover */
+    color: white;
+}
+
+/* Gaya modern untuk button komentar */
+button i.bxs-send {
+    background-color: #d4e8f7; /* Warna dasar untuk tombol komentar */
+    border-radius: 50%;
+    padding: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button i.bxs-send:hover {
+    background-color: #17a2b8; /* Warna hover tombol komentar */
+    color: white;
+    transform: scale(1.1); /* Sedikit memperbesar pada hover */
+}
+
+/* Style untuk input komentar */
+input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: 80%;
+    margin-right: 10px;
+    transition: border 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #007bff; /* Warna biru saat input aktif */
+}
+
+
+#post-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Menempatkan postingan di tengah secara horizontal */
+}
+
+.post {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%; /* Full width untuk mencakup seluruh postingan */
+    max-width: 800px; /* Tentukan lebar maksimal */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
