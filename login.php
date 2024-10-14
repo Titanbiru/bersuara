@@ -8,26 +8,25 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/login-3.css">
+    <link rel="stylesheet" href="css/login-2.css">
 </head>
 <body>
     <div class="container">
-        <div class="login-form">
-            <h2>Login</h2>
-            <form method="POST" action="login_process.php">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <div class="error">
-                    <?php if (isset($_SESSION['login_error'])): ?>
-                        <p class="error-message"><?php echo $_SESSION['login_error']; unset($_SESSION['login_error']); ?></p>
-                        <?php endif ?>
-                    </div>
-                    <button type="submit" name="">Login</button>
-                    <p>Don't have an account? <a href="register.php">Register here</a></p>
+    <div class="login-form">
+            <h2>SMK CITRA NEGARA</h2>
+            <h3>Login to bersuara</h3>
+            <form>
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                <button type="submit">Login</button>
             </form>
+            <p>Don't have an account? <a href="register.php">Register here</a></p>
             </div>
     </div>  
 </body>

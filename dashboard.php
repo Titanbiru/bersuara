@@ -102,14 +102,29 @@ foreach ($posts as $post) {
 <div id="post-container">
     <?php foreach ($posts as $post): ?>
         <div class="post">
-            <p><strong><?php 
-                    if (!empty($post['full_name'])) {
-                        echo htmlspecialchars($post['full_name']); 
-                    } else {
-                        echo htmlspecialchars($post['username']); 
-                    }
-                    ?></strong> - <?php echo htmlspecialchars($post['created_at']); ?></p>
+        <div class="user-info">
+            <!-- Display Profile Picture if available -->
+            <?php if (!empty($post['profile_picture'])): ?>
+                <img src="uploads/<?php echo htmlspecialchars($post['profile_picture']); ?>" alt="Profile Picture" class="profile-picture">
+            <?php else: ?>
+                <!-- Display first letter as a fallback if no profile picture -->
+                <div class="default-avatar" title="<?php echo htmlspecialchars($post['username']); ?>">
+                    <?php
+                    // Extract the first letter of the user's full name or username
+                    $initial = !empty($post['full_name']) ? strtoupper($post['full_name'][0]) : strtoupper($post['username'][0]);
+                    echo htmlspecialchars($initial);
+                    ?>
+                </div>
+            <?php endif; ?>
 
+                <p><strong><?php 
+                        if (!empty($post['full_name'])) {
+                            echo htmlspecialchars($post['full_name']); 
+                        } else {
+                            echo htmlspecialchars($post['username']); 
+                        }
+                        ?></strong> - <?php echo htmlspecialchars($post['created_at']); ?></p>
+            </div>
             <p><?php echo htmlspecialchars($post['text']); ?></p>
             <?php if (!empty($post['media'])) {
                 $filePath = "./uploads/" . htmlspecialchars($post['media']);
