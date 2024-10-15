@@ -8,7 +8,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="css/regis-1.css">
+    <link rel="stylesheet" href="css/regis-4.css">
 </head>
 <body>
     <div class="container">
@@ -26,6 +26,10 @@ session_start();
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" id="confirm_password">
         </div>
         <div class="error-message">
                 <?php if (isset($_SESSION['register_error'])): ?>

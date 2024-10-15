@@ -33,7 +33,7 @@ if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
 
         // Arahkan pengguna ke dashboard
-        header("Location: dashboard.php");
+        header("Location: wellcome.php");
         exit();
     } else {
         // Jika login gagal, simpan pesan error di sesi

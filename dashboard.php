@@ -11,23 +11,24 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Ambil data pengguna
-$query = "SELECT username FROM users WHERE id = ?";
+// Ambil data pengguna beserta gambar profil
+$query = "SELECT username, full_name, profile_picture FROM users WHERE id = ?";
 $statement = $pdo->prepare($query);
 $statement->execute([$user_id]);
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 
+
 // Ambil semua postingan
 $query = "SELECT posts.id, posts.text, posts.created_at, users.username, users.full_name, posts.media, 
-                 COALESCE(likes.like_count, 0) AS like_count,
-                 COALESCE(dislikes.dislike_count, 0) AS dislike_count
-          FROM posts 
-          JOIN users ON posts.user_id = users.id 
-          LEFT JOIN (SELECT post_id, COUNT(*) AS like_count FROM likes GROUP BY post_id) AS likes 
-          ON posts.id = likes.post_id 
-          LEFT JOIN (SELECT post_id, COUNT(*) AS dislike_count FROM dislikes GROUP BY post_id) AS dislikes 
-          ON posts.id = dislikes.post_id
-          ORDER BY posts.created_at DESC";
+                COALESCE(likes.like_count, 0) AS like_count,
+                COALESCE(dislikes.dislike_count, 0) AS dislike_count
+        FROM posts 
+        JOIN users ON posts.user_id = users.id 
+        LEFT JOIN (SELECT post_id, COUNT(*) AS like_count FROM likes GROUP BY post_id) AS likes 
+        ON posts.id = likes.post_id 
+        LEFT JOIN (SELECT post_id, COUNT(*) AS dislike_count FROM dislikes GROUP BY post_id) AS dislikes 
+        ON posts.id = dislikes.post_id
+        ORDER BY posts.created_at DESC";
 
 $statement = $pdo->prepare($query);
 $statement->execute();
@@ -70,7 +71,10 @@ if (isset($_POST['action'])) {
 // Ambil komentar untuk setiap postingan
 $comments = [];
 foreach ($posts as $post) {
-    $comment_query = "SELECT comment_text, created_at FROM comments WHERE post_id = ?";
+    $comment_query = "SELECT comments.comment_text, comments.created_at, users.username 
+    FROM comments 
+    JOIN users ON comments.user_id = users.id 
+    WHERE comments.post_id = ?";
     $comment_statement = $pdo->prepare($comment_query);
     $comment_statement->execute([$post['id']]);
     $comments[$post['id']] = $comment_statement->fetchAll(PDO::FETCH_ASSOC);
@@ -84,48 +88,109 @@ foreach ($posts as $post) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="css/dashboard-1.css">
+    <link rel="stylesheet" href="css/dashboard-3.css">
+    <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="js/script.js" defer></script>
 </head>
 <body>
 
-<h1>Welcome, 
-<?php 
-    if (!empty($user['full_name'])) {
-        echo htmlspecialchars($user['full_name']);
-    } else {
-        echo htmlspecialchars($user['username']);
-    } 
-?>! You are logged in.
-</h1>
+<nav class="sidebar locked">
+    <div class="logo_items flex">
+        <span class="nav_image">
+            <img src="CN.jpg" alt="logo_img" />
+        </span>
+        <span class="logo_name">Bersuara</span>
+        <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
+        <i class="bx bx-x" id="sidebar-close"></i>
+    </div>
 
-<h2>Your Posts</h2>
+        <div class="menu_container">
+            <div class="menu_items">
+                <ul class="menu_item">
+                <div class="menu_title flex">
+                    <span class="title">Menu</span>
+                    <span class="line"></span>
+                </div>
+                <li class="item">
+                    <a href="dashboard.php" class="link flex">
+                        <i class="bx bx-home-alt"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="profile.php" class="link flex">
+                    <i class='bx bxs-user-account'></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="posts-form.php" class="link flex">
+                        <i class="bx bx-cloud-upload"></i>
+                        <span>Upload New</span>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="logout.php" class="link flex">
+                        <i class="bx bx-log-out"></i>
+                        <span>Log out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar_profile flex">
+            <span class="nav_image">
+                <?php if (!empty($user['profile_image'])): ?>
+                    <img src="<?php echo './uploads/' . htmlspecialchars($user['profile_picture']); ?>" alt="Profile Image" />
+                <?php else: ?>
+                    <!-- Default placeholder with the first letter -->
+                    <div class="profile-letter">
+                        <?php 
+                            // Get the first letter from full_name or username
+                            $firstLetter = !empty($user['full_name']) ? $user['full_name'][0] : $user['username'][0]; 
+                            echo strtoupper(htmlspecialchars($firstLetter)); 
+                        ?>
+                    </div>
+                <?php endif; ?>
+            </span>
+            <div class="data_text">
+                <?php 
+                    if (!empty($user['full_name'])) {
+                        echo htmlspecialchars($user['full_name']);
+                    } else {
+                        echo htmlspecialchars($user['username']);
+                    } 
+                ?>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Navbar -->
+    <nav class="navbar flex">
+        <i class="bx bx-menu" id="sidebar-open"></i>
+        <span><h1><b>Bersuara</b></h1></span>
+        <span class="nav_image">
+            <img src="CN.jpg" alt="logo_img" />
+        </span>
+    </nav>
+
+    <br><br><br>
+
+    stroy an
+
 <div id="post-container">
     <?php foreach ($posts as $post): ?>
         <div class="post">
-        <div class="user-info">
-            <!-- Display Profile Picture if available -->
-            <?php if (!empty($post['profile_picture'])): ?>
-                <img src="uploads/<?php echo htmlspecialchars($post['profile_picture']); ?>" alt="Profile Picture" class="profile-picture">
-            <?php else: ?>
-                <!-- Display first letter as a fallback if no profile picture -->
-                <div class="default-avatar" title="<?php echo htmlspecialchars($post['username']); ?>">
-                    <?php
-                    // Extract the first letter of the user's full name or username
-                    $initial = !empty($post['full_name']) ? strtoupper($post['full_name'][0]) : strtoupper($post['username'][0]);
-                    echo htmlspecialchars($initial);
-                    ?>
-                </div>
-            <?php endif; ?>
-
-                <p><strong><?php 
-                        if (!empty($post['full_name'])) {
-                            echo htmlspecialchars($post['full_name']); 
-                        } else {
-                            echo htmlspecialchars($post['username']); 
-                        }
-                        ?></strong> - <?php echo htmlspecialchars($post['created_at']); ?></p>
-            </div>
-            <p><?php echo htmlspecialchars($post['text']); ?></p>
+            <!-- Nama dan waktu postingan -->
+            <p><strong><?php 
+                    if (!empty($post['full_name'])) {
+                        echo htmlspecialchars($post['full_name']); 
+                    } else {
+                        echo htmlspecialchars($post['username']); 
+                    }
+                    ?></strong> - <?php echo htmlspecialchars($post['created_at']); ?></p>
+            <!-- Media seperti gambar atau video -->
             <?php if (!empty($post['media'])) {
                 $filePath = "./uploads/" . htmlspecialchars($post['media']);
                 
@@ -147,34 +212,53 @@ foreach ($posts as $post) {
                 }
             }
             ?>
+
+<br>
+
+            <!-- Pindahkan deskripsi di sini, di bawah media -->
+            <p><?php echo htmlspecialchars($post['text']); ?></p>
+
             <p>Likes: <?php echo htmlspecialchars($post['like_count']); ?> | Dislikes: <?php echo htmlspecialchars($post['dislike_count']); ?></p>
             <form method="POST" action="dashboard.php">
                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                <button type="submit" name="action" value="like">Like</button>
-                <button type="submit" name="action" value="dislike">Dislike</button>
+                <button type="submit" name="action" value="like">
+                    <i class='bx bxs-like'></i>
+                </button>
+                <button type="submit" name="action" value="dislike">
+                <i class='bx bxs-dislike' ></i>
+                </button>
             </form>
+
+            <br>
 
             <div>
                 <p>Comments:</p>
                 <form method="POST" action="dashboard.php">
                     <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                     <input type="text" name="comment_text" placeholder="Add a comment...">
-                    <button type="submit">Submit</button>
+                    <button type="submit">
+                        <i class='bx bxs-send' ></i>
+                    </button>
                 </form>
                 <div class="comments">
                     <?php foreach ($comments[$post['id']] as $comment): ?>
-                        <p><?php echo htmlspecialchars($comment['comment_text']); ?> - <?php echo htmlspecialchars($comment['created_at']); ?></p>
+                        <p>
+                            <strong><?php echo htmlspecialchars($comment['username']); ?>:</strong>
+                            <?php echo htmlspecialchars($comment['comment_text']); ?> 
+                            - <?php echo htmlspecialchars($comment['created_at']); ?>
+                        </p>
                     <?php endforeach; ?>
                 </div>
             </div>
-            <button class="share-btn" data-url="post.php?id=<?php echo $post['id']; ?>">Share</button>
+
+            <br>
+            <button class="share-btn" data-url="post.php?id=<?php echo $post['id']; ?>">
+            <i class='bx bxs-share'></i>
+            </button>
         </div>
     <?php endforeach; ?>
 </div>
 
-<a href="edit_profile.php">Edit Profile</a>
-<p><a href="posts-form.php">Create a New Post</a></p>
-<p><a href="logout.php">Logout</a></p>
 
 <?php include "layout/footer.html" ?>
 <script>

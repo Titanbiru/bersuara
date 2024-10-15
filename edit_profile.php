@@ -1,31 +1,81 @@
 <?php
-session_start();
+// Aktifkan pelaporan kesalahan (opsional, hanya untuk pengembangan)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Sertakan file konfigurasi untuk koneksi database
 include 'database/db.php';
 
-// Pastikan pengguna sudah login
+session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil ID pengguna dari sesi
 $user_id = $_SESSION['user_id'];
 
-// Ambil data pengguna dari database untuk ditampilkan di form
-$query = "SELECT full_name, email, bio, profile_picture FROM users WHERE id = ?";
+$query = "SELECT username, full_name, profile_picture, email, bio FROM users WHERE id = ?";
 $statement = $pdo->prepare($query);
 $statement->execute([$user_id]);
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-// Proses jika formulir disubmit
+// Proses form saat di-submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil data dari formulir
+    $full_name = $_POST['full_name'];
     $email = $_POST['email'];
     $bio = $_POST['bio'];
-    $full_name = $_POST['full_name'];
     $password = $_POST['password'] ?? null;
 
-    // Ubah profil gambar jika diupload
+    // VALIDASI INPUT SERVER-SIDE
+    // Validasi email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = "Invalid email format";
+        header("Location: edit_profile.php");
+        exit();
+    }
+
+    // Validasi nama lengkap (tidak mengandung angka atau simbol)
+    if (!preg_match("/^[a-zA-Z\s]+$/", $full_name)) {
+        $_SESSION['error'] = "Full name can only contain letters and spaces";
+        header("Location: edit_profile.php");
+        exit();
+    }
+
+    // Validasi password (jika diubah)
+    if (!empty($password) && strlen($password) < 6) {
+        $_SESSION['error'] = "Password must be at least 6 characters";
+        header("Location: edit_profile.php");
+        exit();
+    }
+
+    // Validasi konfirmasi password (jika diubah)
+    if (!empty($password) && $password !== $_POST['confirm_password']) {
+        $_SESSION['error'] = "Passwords do not match";
+        header("Location: edit_profile.php");
+        exit();
+    }
+
+    // PROSES UPLOAD GAMBAR PROFIL DENGAN VALIDASI
+    $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    $maxFileSize = 6 * 1024 * 1024; // 2MB
+
     if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+        $fileType = mime_content_type($_FILES['profile_picture']['tmp_name']);
+        $fileSize = $_FILES['profile_picture']['size'];
+
+        if (!in_array($fileType, $allowedFileTypes)) {
+            $_SESSION['error'] = "Only JPG, JPEG, and PNG formats are allowed";
+            header("Location: edit_profile.php");
+            exit();
+        }
+
+        if ($fileSize > $maxFileSize) {
+            $_SESSION['error'] = "File size must not exceed 2MB";
+            header("Location: edit_profile.php");
+            exit();
+        }
+
         $fileName = $_FILES['profile_picture']['name'];
         $fileTmpPath = $_FILES['profile_picture']['tmp_name'];
         $uploadFileDir = './uploads/';
@@ -38,11 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Update data pengguna di database
-    $update_query = "UPDATE users SET email = ?, bio = ?, full_name = ?, profile_picture = ? WHERE id = ?";
+    $update_query = "UPDATE users SET full_name = ?, email = ?, bio = ?, profile_picture = ? WHERE id = ?";
     $statement = $pdo->prepare($update_query);
-    $statement->execute([$email, $bio, $full_name, $profile_picture, $user_id]);
+    $statement->execute([$full_name, $email, $bio, $profile_picture, $user_id]);
 
-    // Ubah password jika diberikan
+    // Jika password diubah
     if (!empty($password)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $update_password_query = "UPDATE users SET password = ? WHERE id = ?";
@@ -50,65 +100,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->execute([$hashed_password, $user_id]);
     }
 
+    // REGENERASI SESSION ID UNTUK KEAMANAN
+    session_regenerate_id(true); 
+
     $_SESSION['update_success'] = "Profile updated successfully!";
     header("Location: edit_profile.php");
     exit();
 }
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="css/edit_profile4.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="js/sidebar.js" defer></script>
 </head>
 <body>
-
+    <?php include "layout/sidebar.php"?>
     <div class="container">
-        <h1>Edit Profile</h1>
+        <div class="content">
+            <h1>Edit Profile</h1>
+            <?php if (isset($_SESSION['update_success'])): ?>
+                <p class="success-message"><?php echo $_SESSION['update_success']; unset($_SESSION['update_success']); ?></p>
+            <?php endif; ?>
 
-        <?php if (isset($_SESSION['update_success'])): ?>
-            <p class="success-message"><?php echo $_SESSION['update_success']; unset($_SESSION['update_success']); ?></p>
-        <?php endif; ?>
+            <form method="POST" action="edit_profile.php" enctype="multipart/form-data">
+                <label>Profile Picture</label><br>
+                <div style="position: relative;">
+                    <input type="file" name="profile_picture" id="profile_picture" accept="image/*" style="display: none;">
+                    <label for="profile_picture" class="profile-pic-button">Choose Profile Picture</label>
+                </div><br>
 
-        <form method="POST" action="edit_profile.php" enctype="multipart/form-data">
-        <label>Profile Picture</label><br>
-        <div style="position: relative;">
-            <input type="file" name="profile_picture" id="profile_picture" accept="image/*" style="display: none;">
-            <label for="profile_picture" class="profile-pic-button">Choose Profile Picture</label>
-        </div>
-        <br>
+                <label>Full Name</label>
+                <input type="text" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" required>
 
-            <label>Full Name</label>
-            <input type="text" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" required>
+                <label>Email</label>
+                <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
 
-            <label>Email</label>
-            <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                <label>Bio</label>
+                <textarea name="bio" rows="5"><?php echo htmlspecialchars($user['bio']); ?></textarea>
 
-            <label>Bio</label>
-            <textarea name="bio" rows="5"><?php echo htmlspecialchars($user['bio']); ?></textarea>
-
-            <label>Password</label><br>
-            <div style="position: relative;">
+                <label>Password</label><br>
                 <input type="password" name="password" id="password" required>
-                <input type="checkbox" style="color: white;" onclick="myFunction()">Show Password
-            </div><br><br>
-            <button type="submit">Update Profile</button>
-            <button>
-                <a href="dashboard.php">Back to Dashboard</a>
-            </button>
-        </form>
+
+                <label>Confirm New Password</label>
+                <input type="password" name="confirm_password" id="confirm_password">
+                <br><br>
+
+                <button type="submit">Update Profile</button>
+            </form>
+        </div>
     </div>
-        <script>
-            function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-            }
-        </script>
+
+    <script src="js/edit_profile.js"></script>
 </body>
 </html>

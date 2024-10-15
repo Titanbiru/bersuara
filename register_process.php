@@ -10,13 +10,22 @@ include 'database/db.php';
 session_start();
 
 // Ambil data dari formulir pendaftaran
+// Ambil data dari formulir pendaftaran
 $username = $_POST['username'];
-$email = $_POST['email'];  // Ambil email dari form
+$email = $_POST['email']; // Ambil email dari form
 $password = $_POST['password'];
+$confirm_password = $_POST['confirm_password']; // Ambil confirm_password dari form
 
 // Validasi data
-if (empty($username) || empty($password) || empty($email)) {
+if (empty($username) || empty($password) || empty($email) || empty($confirm_password)) {
     $_SESSION['register_error'] = "All fields are required.";
+    header("Location: register.php");
+    exit();
+}
+
+// Validasi apakah password dan confirm_password cocok
+if ($password !== $confirm_password) {
+    $_SESSION['register_error'] = "Passwords do not match.";
     header("Location: register.php");
     exit();
 }
@@ -40,11 +49,12 @@ $statement = $pdo->prepare($query);
 
 if ($statement->execute([$username, $email, $hashed_password])) {
     $_SESSION['register_success'] = "Registration successful! You can now log in.";
-    header("Location: dashboard.php");
+    header("Location: wellcome.php");
     exit();
 } else {
     $_SESSION['register_error'] = "Registration failed. Please try again.";
     header("Location: register.php");
     exit();
 }
+
 ?>
