@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
 
                 <label>Bio</label>
-                <textarea name="bio" rows="5"><?php echo htmlspecialchars($user['bio']); ?></textarea>
+                <textarea name="bio" rows="5"><?php echo htmlspecialchars($user['bio'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
 
                 <label>Password</label><br>
                 <input type="password" name="password" id="password" required>
