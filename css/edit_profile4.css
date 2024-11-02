@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Poppins", sans-serif;
     display: flex;
     height: 100vh;
     margin: 0;
@@ -150,6 +150,7 @@ body {
     transform: translateX(-50%);
     background: #fff;
     padding: 10px 20px;
+    border: 1px solid black;
     border-radius: 0 0 8px 8px;
     justify-content: space-between;
     z-index: 3;
@@ -201,6 +202,23 @@ body {
     }
   }
 
+  .sidebar_profile {
+    padding-top: 15px;
+    margin-top: 15px;
+    gap: 15px;
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar_profile .name {
+    font-size: 18px;
+    color: #333;
+  }
+
+  .sidebar_profile .email {
+    font-size: 15px;
+    color: #333;
+  }
+
 .container {
     margin-top: 70px;
     width: 100%;
@@ -211,7 +229,7 @@ body {
     .content {
         margin-left: 30px;
       padding-left: 50px; /* Kembalikan padding kiri untuk tampilan desktop */
-      padding-right: 0; /* Opsional: Tambahkan padding kanan agar seimbang */
+      padding-right: 10px; /* Opsional: Tambahkan padding kanan agar seimbang */
       width: calc(100% - 80px); /* Sesuaikan lebar konten untuk mengimbangi padding */
     }
 }
@@ -219,7 +237,6 @@ body {
 .content {
     box-sizing: border-box;
 }
-
 
 .content h1 {
     color: #ffffff;
@@ -230,8 +247,8 @@ body {
 @media screen and (max-width: 800px) {
     .profile-container,
     .content {
-      padding-left: 0; /* Hilangkan padding kiri saat di mobile */
-      padding-right: 0; /* Opsional: Hilangkan padding kanan juga jika diperlukan */
+      padding-left: 10px; /* Hilangkan padding kiri saat di mobile */
+      padding-right: 10px; /* Opsional: Hilangkan padding kanan juga jika diperlukan */
       width: 100%; /* Pastikan lebar konten memenuhi layar */
     }
 }

@@ -35,8 +35,8 @@ if (!$user) {
 <style>
     /* Global Styles */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f8f9fa;
+    font-family: "Poppins", sans-serif;
+    background-color: #f4eef3bc;
     color: #333;
     margin: 0;
     padding: 0;
@@ -102,8 +102,40 @@ a {
 a:hover {
     color: #68507B;
 }
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.navbar {
+    max-width: 500px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 0 0 8px 8px;
+    justify-content: space-between;
+    z-index: 3;
+}
+.navbar img {
+    height: 40px;
+    width: 40px;
+    margin-left: 20px;
+}
 </style>
 <body>
+<nav class="navbar flex">
+    <i class="bx bx-menu" id="sidebar-open"></i>
+    <span><h1><b>Bersuara</b></h1></span>
+    <span class="nav_image">
+        <img src="CN.jpg" alt="logo_img" />
+    </span>
+</nav>
     <div class="center-container">
         <span class="command">  
         <h1>Welcome, 
@@ -116,7 +148,6 @@ a:hover {
         ?>! You are logged in.
         </h1>
         <br><br>
-        <h2>GO NEXT!!!</h2>
         <a href="dashboard.php"> 
             <button>
                 NEXT

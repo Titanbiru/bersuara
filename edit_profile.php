@@ -21,46 +21,28 @@ $user = $statement->fetch(PDO::FETCH_ASSOC);
 
 // Proses form saat di-submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ambil data dari formulir
+
     $full_name = $_POST['full_name'];
     $email = $_POST['email'];
     $bio = $_POST['bio'];
-    $password = $_POST['password'] ?? null;
 
-    // VALIDASI INPUT SERVER-SIDE
-    // Validasi email
+    if (strpos($full_name, ' ') !== false) {
+        $_SESSION['error'] = "Full Name tidak boleh mengandung spasi. Silakan gunakan simbol sebagai pengganti spasi.";
+        header("Location: edit_profile.php");
+        exit();
+    }
+    
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['error'] = "Invalid email format";
         header("Location: edit_profile.php");
         exit();
     }
 
-    // Validasi nama lengkap (tidak mengandung angka atau simbol)
-    if (!preg_match("/^[a-zA-Z\s]+$/", $full_name)) {
-        $_SESSION['error'] = "Full name can only contain letters and spaces";
-        header("Location: edit_profile.php");
-        exit();
-    }
-
-    // Validasi password (jika diubah)
-    if (!empty($password) && strlen($password) < 6) {
-        $_SESSION['error'] = "Password must be at least 6 characters";
-        header("Location: edit_profile.php");
-        exit();
-    }
-
-    // Validasi konfirmasi password (jika diubah)
-    if (!empty($password) && $password !== $_POST['confirm_password']) {
-        $_SESSION['error'] = "Passwords do not match";
-        header("Location: edit_profile.php");
-        exit();
-    }
-
-    // PROSES UPLOAD GAMBAR PROFIL DENGAN VALIDASI
-    $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    $maxFileSize = 6 * 1024 * 1024; // 2MB
-
+    // Proses pengeditan informasi umum (bio dan gambar profil)
     if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+        $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        $maxFileSize = 6 * 1024 * 1024; // 6MB
+
         $fileType = mime_content_type($_FILES['profile_picture']['tmp_name']);
         $fileSize = $_FILES['profile_picture']['size'];
 
@@ -71,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($fileSize > $maxFileSize) {
-            $_SESSION['error'] = "File size must not exceed 2MB";
+            $_SESSION['error'] = "File size must not exceed 6MB";
             header("Location: edit_profile.php");
             exit();
         }
@@ -92,8 +74,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statement = $pdo->prepare($update_query);
     $statement->execute([$full_name, $email, $bio, $profile_picture, $user_id]);
 
-    // Jika password diubah
-    if (!empty($password)) {
+    // Jika password diubah, memerlukan konfirmasi password
+    if (!empty($_POST['password'])) {
+        $password = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];
+
+        // Validasi konfirmasi password
+        if ($password !== $confirm_password) {
+            $_SESSION['error'] = "Passwords do not match";
+            header("Location: edit_profile.php");
+            exit();
+        }
+
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $update_password_query = "UPDATE users SET password = ? WHERE id = ?";
         $statement = $pdo->prepare($update_password_query);
@@ -108,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -125,19 +116,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="content">
             <h1>Edit Profile</h1>
-            <?php if (isset($_SESSION['update_success'])): ?>
-                <p class="success-message"><?php echo $_SESSION['update_success']; unset($_SESSION['update_success']); ?></p>
-            <?php endif; ?>
-
-            <form method="POST" action="edit_profile.php" enctype="multipart/form-data">
+            
+            <form method="POST" action="edit_profile.php" enctype="multipart/form-data" id="edit-profile-form">
                 <label>Profile Picture</label><br>
                 <div style="position: relative;">
                     <input type="file" name="profile_picture" id="profile_picture" accept="image/*" style="display: none;">
                     <label for="profile_picture" class="profile-pic-button">Choose Profile Picture</label>
                 </div><br>
 
+                <span style="color:cyan;">
+                <?php if (isset($_SESSION['error'])): ?>
+                    <div class="error-message"><?php echo $_SESSION['error']; ?></div>
+                    <?php unset($_SESSION['error']); // Hapus setelah ditampilkan ?>
+                <?php endif; ?>
+    
+                <?php if (isset($_SESSION['update_success'])): ?>
+                    <div class="success-message"><?php echo $_SESSION['update_success']; ?></div>
+                    <?php unset($_SESSION['update_success']); // Hapus setelah ditampilkan ?>
+                <?php endif; ?>
+                </span>
+
+                <br>
+
                 <label>Full Name</label>
-                <input type="text" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" required>
+                <input type="text" id="full-name" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" placeholder="Full Name" required>
 
                 <label>Email</label>
                 <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
@@ -145,8 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Bio</label>
                 <textarea name="bio" rows="5"><?php echo htmlspecialchars($user['bio'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
 
-                <label>Password</label><br>
-                <input type="password" name="password" id="password" required>
+                <label>Password (leave empty to keep current password)</label><br>
+                <input type="password" name="password" id="password">
 
                 <label>Confirm New Password</label>
                 <input type="password" name="confirm_password" id="confirm_password">

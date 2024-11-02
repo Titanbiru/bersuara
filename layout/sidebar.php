@@ -23,13 +23,13 @@
                 </li>
                 <li class="item">
                     <a href="profile.php" class="link flex">
-                        <i class="bx bx-cloud-upload"></i>
+                        <i class='bx bxs-user-rectangle'></i>
                         <span>Profile</span>
                     </a>
                 </li>
                 <li class="item">
                     <a href="edit_profile.php" class="link flex">
-                    <i class='bx bxs-user-account'></i>
+                    <i class='bx bx-edit-alt'></i>
                         <span>Edit Profile</span>
                     </a>
                 </li>
@@ -75,20 +75,6 @@
     <i class="bx bx-menu" id="sidebar-open"></i>
     <span><h1><b>Bersuara</b></h1></span>
     <span class="nav_image">
-        <img src="CN.jpg" alt="logo_img" />
+        <img src="cn bersuara.jpg" alt="logo_img" />
     </span>
 </nav>
-
-<!-- <div class="sidebar" id="sidebar">
-    <a href="profile_site.php">Profile</a>
-    <a href="edit_profile.php">Edit Profile</a>
-    <a href="dashboard.php">Dashboard</a>
-    <a href="logout.php">Logout</a>
-</div> -->
-
-
-<!-- Button to toggle sidebar -->
-<!-- <div class="toggle-btn" onclick="toggleSidebar()">
-    <span>&#9776; Menu</span>
-</div> -->
-

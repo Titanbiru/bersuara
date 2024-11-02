@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Bersuara</title>
     <link rel="stylesheet" href="css/index-2.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <?php if (isset($_SESSION['user_id'])): ?>
-        <h1></h1>
         <?php else: ?>
             <div class="login_and_register">
             <a href="login.php">Log In</a>
@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <img src="cn logo.png" alt="image.description" width="200" style="display: block; margin: 0 auto;">
             <br>
             <p>Web bersuara, atau aplikasi web yang menggunakan suara, memiliki berbagai kegunaan yang bermanfaat.</p>
-    </div>  
+    </div>
+    <?php include "layout/footer.html"?>  
 </body>
 </html>

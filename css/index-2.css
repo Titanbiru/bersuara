@@ -1,6 +1,6 @@
 body {
-    background-color: #f4f4f9;
-    font-family: 'Roboto', sans-serif;
+    background-color: #f4eef3bc;
+    font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
     position: relative;
@@ -12,20 +12,12 @@ h1 {
     margin-bottom: 20px;
 }
 
-p {
-    color: #555;
-    text-align: center;
-    margin: 0 auto 20px;
-    max-width: 600px;
-}
-
 .card {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    top: 90px;
-    margin: 40px auto;
+    margin: 120px auto;
     max-width: 400px;
     text-align: center;
     transition: transform 0.3s ease;
@@ -52,12 +44,12 @@ img {
     height: auto;
 }
 
-/* Styling for login and register buttons */
+
 .login_and_register {
-    position: fixed; /* Stays in the same position even when scrolling */
+    position: fixed;
     top: 10px;
     right: 20px;
-    z-index: 100; /* Ensures it's on top of other elements */
+    z-index: 100; 
     display: flex;
     gap: 10px;
 }
@@ -74,4 +66,52 @@ img {
 
 .login_and_register a:hover {
     background-color: #6a1b9a;
+}
+
+footer {
+    background-color: #4a148c;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-family: Arial, sans-serif;
+}
+
+.footer-content h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.footer-content p {
+    max-width: 500px;
+    margin: 0 auto 20px;
+    line-height: 1.2;
+}
+
+.socials {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.socials li {
+    margin: 0 10px;
+}
+
+.socials a {
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.socials a:hover {
+    color: #3498db;
+}
+
+.footer-bottom {
+    margin-top: 10px;
+    font-size: 14px;
 }

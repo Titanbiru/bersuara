@@ -160,6 +160,7 @@ body {
   transform: translateX(-50%);
   background: #fff;
   padding: 10px 20px;
+  border: 1px solid black;
   border-radius: 0 0 8px 8px;
   justify-content: space-between;
 }
@@ -286,20 +287,123 @@ input[type="text"]:focus {
     border-color: #007bff; /* Warna biru saat input aktif */
 }
 
-
 #post-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Menempatkan postingan di tengah secara horizontal */
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  gap: 20px; 
 }
 
+/* Gaya untuk setiap postingan */
 .post {
-    background-color: white;
-    padding: 20px;
-    margin-bottom: 20px;
-    width: 100%; /* Full width untuk mencakup seluruh postingan */
-    max-width: 800px; /* Tentukan lebar maksimal */
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%; /* Full width untuk mencakup seluruh postingan */
+  max-width: 800px; /* Tentukan lebar maksimal */
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+}
+.comments-list {
+  padding-left: 0;
+  list-style-type: none;
 }
 
+.comment {
+  margin-bottom: 15px;
+}
+
+/* Button reply dengan gaya khusus */
+button.reply-btn {
+  background-color: #d2e4f4; /* Warna dasar biru terang */
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover efek animasi untuk tombol reply */
+button.reply-btn:hover {
+  background-color: #007bff; /* Biru gelap pada hover */
+  color: white;
+  transform: scale(1.05); /* Sedikit memperbesar saat dihover */
+}
+
+
+.reply {
+  margin-left: 20px; /* Tambahkan indentasi pada reply */
+  border-left: 2px solid #ccc; /* Garis vertikal untuk reply */
+  padding-left: 10px;
+}
+
+.reply blockquote {
+  margin: 0;
+  padding-left: 15px;
+  border-left: 2px solid #0073e6; /* Warna untuk highlight reply */
+  color: #555;
+}
+
+.comment strong, .reply strong {
+  color: #333;
+  font-weight: bold;
+}
+
+.comment small, .reply small {
+  display: block;
+  font-size: 0.85em;
+  color: #888;
+}
+
+/* Footer Styles */
+footer {
+  background-color: #4a148c;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-content h3 {
+  font-size: 24px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.footer-content p {
+  max-width: 500px;
+  margin: 0 auto 20px;
+  line-height: 1.2;
+}
+
+.socials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.socials li {
+  margin: 0 10px;
+}
+
+.socials a {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.socials a:hover {
+  color: #3498db;
+}
+
+.footer-bottom {
+  margin-top: 10px;
+  font-size: 14px;
+}

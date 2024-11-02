@@ -1,15 +1,20 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 100vh; 
+    margin: 0;
+    background-color: #f4eef3bc;
 }
 
 .container {
+    margin-top: 20px;
     width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffffff;
 }
 
 .login-form {
@@ -75,4 +80,30 @@ a {
 
 a:hover {
     color: #68507B;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.navbar {
+    max-width: 500px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 0 0 8px 8px;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+.navbar img {
+    height: 40px;
+    width: 40px;
+    margin-left: 20px;
 }

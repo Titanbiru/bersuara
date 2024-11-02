@@ -8,13 +8,20 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/login-2.css">
+    <link rel="stylesheet" href="css/login-3.css">
 </head>
 <body>
+    <nav class="navbar flex">
+        <i class="bx bx-menu" id="sidebar-open"></i>
+        <span><h1><b>Bersuara</b></h1></span>
+        <span class="nav_image">
+            <img src="cn bersuara.jpg" alt="logo_img" />
+        </span>
+    </nav>
     <div class="container">
         <div class="login-form">
             <h2>SMK CITRA NEGARA</h2>
-            <h3>Loginfrom bersuara</h3>
+            <h3>Login to Bersuara</h3>
             <form method="POST" action="login_process.php">
                 <div class="input-group">
                     <label for="username">Username:</label>
