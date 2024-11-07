@@ -164,89 +164,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
     <link rel="stylesheet" href="css/dashboard-1.css">
     <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="js/script.js" defer></script>
     <script src="js/reply.js" defer></script> 
 </head>
-<body>
+ <body> 
+ <nav>
+  <input type="checkbox" id="sidebar-active">
+  <label for="sidebar-active" class="open-sidebar-button">
+    <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+  </label>
+  <label id="overlay" for="sidebar-active"></label>
+  <div class="links-container">
+    <label for="sidebar-active" class="close-sidebar-button">
+      <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+    </label>
+    <a class="home-link" href="dashboard.php">Home</a>
 
-<nav class="sidebar locked">
-    <div class="logo_items flex">
-        <span class="nav_image">
-            <img src="CN.jpg" alt="logo_img" />
-        </span>
-        <span class="logo_name">Bersuara</span>
-        <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
-        <i class="bx bx-x" id="sidebar-close"></i>
-    </div>
+<div class="dropdown-select">
+    <label for="profile-options"></label>
+    <select id="profile-options" onchange="navigateToPage()">
+        <option value="#">Profile</option>
+        <option value="profile.php">View Profile</option>
+        <option value="edit_profile.php">Edit Profile</option>
+        <option value="logout.php">Logout</option>
+    </select>
+</div>
 
-        <div class="menu_container">
-            <div class="menu_items">
-                <ul class="menu_item">
-                <div class="menu_title flex">
-                    <span class="title">Menu</span>
-                    <span class="line"></span>
-                </div>
-                <li class="item">
-                    <a href="dashboard.php" class="link flex">
-                        <i class="bx bx-home-alt"></i>
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li class="item">
-                    <a href="profile.php" class="link flex">
-                    <i class='bx bxs-user-rectangle'></i>
-                        <span>Profile</span>
-                    </a>
-                </li>
-                <li class="item">
-                    <a href="posts-form.php" class="link flex">
-                        <i class="bx bx-cloud-upload"></i>
-                        <span>Upload New</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="sidebar_profile flex">
-            <span class="nav_image">
-                <?php if (!empty($user['profile_picture'])): ?>
-                    <!-- Display the uploaded profile picture -->
-                    <img src="<?php echo './uploads/' . htmlspecialchars($user['profile_picture']); ?>" alt="Profile Image" />
-                <?php else: ?>
-                    <!-- Default placeholder with the first letter of the name -->
-                    <div class="profile-letter">
-                        <?php 
-                            // Get the first letter from full_name or username
-                            $firstLetter = !empty($user['full_name']) ? $user['full_name'][0] : $user['username'][0]; 
-                            echo strtoupper(htmlspecialchars($firstLetter)); 
-                        ?>
-                    </div>
-                <?php endif; ?>
-            </span>
-            <div class="data_text">
-                <?php 
-                    if (!empty($user['full_name'])) {
-                        echo htmlspecialchars($user['full_name']);
-                    } else {
-                        echo htmlspecialchars($user['username']);
-                    } 
-                ?>
-            </div>
-        </div>
-    </div>
+<!-- JavaScript untuk navigasi -->
+<script>
+function navigateToPage() {
+    const selectedValue = document.getElementById("profile-options").value;
+    if (selectedValue !== "#") { // Cek jika option bukan default
+        window.location.href = selectedValue;
+    }
+}
+</script>
+    <a href="posts-form.php">New Post</a> 
+  </div>
 </nav>
-
-    <!-- Navbar -->
-    <nav class="navbar flex">
-        <i class="bx bx-menu" id="sidebar-open"></i>
-        <span><h1><b>Bersuara</b></h1></span>
-        <span class="nav_image">
-            <img src="cn bersuara.jpg" alt="logo_img" />
-        </span>
-    </nav>
-
-    <br><br><br>
-
+  <br><br><br><br>
 <div id="post-container">
     <?php foreach ($posts as $post): ?>
     <div class="post">
