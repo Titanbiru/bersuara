@@ -34,7 +34,7 @@ if (!isset($_SESSION['user_id'])) {
             <label for="content">Content:</label>
             <textarea id="text" name="text" rows="2" cols="30" required></textarea>
             
-            <label>Upload Image/Video</label>
+            <label>Create your Post</label>
             <input type="file" name="media" id="media" style="display:none;">
             <label for="media" class="media-button">Choose File</label>
             <br>
