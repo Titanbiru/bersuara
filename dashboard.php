@@ -203,12 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                         <span>Upload New</span>
                     </a>
                 </li>
-                <li class="item">
-                    <a href="logout.php" class="link flex">
-                        <i class="bx bx-log-out"></i>
-                        <span>Log out</span>
-                    </a>
-                </li>
             </ul>
         </div>
 
@@ -275,10 +269,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                         echo '<source src="' . $filePath . '" type="video/' . $fileExtension . '">';
                         echo 'Your browser does not support the video tag.';
                         echo '</video>';
+                        echo '<br>';
                     } elseif (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif'])) {
                         echo '<img src="' . $filePath . '" alt="Uploaded Image" style="max-width: 100%; height: auto;">';
+                        echo '<br>';
+                    } elseif (in_array($fileExtension, ['mp3', 'wav', 'ogg'])) { 
+                        echo '<audio controls>';
+                        echo '<source src="' . $filePath . '" type="audio/' . $fileExtension . '">';
+                        echo 'Your browser does not support the audio tag.';
+                        echo '</audio>';
+                        echo '<br>';
                     } else {
-                        echo "File media tidak didukung.";
+                        echo "<p>File media tidak didukung.</p>";
                     }
                 } else {
                     echo "<p>File tidak ditemukan.</p>";
