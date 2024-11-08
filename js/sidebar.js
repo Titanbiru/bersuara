@@ -36,8 +36,14 @@ const toggleSidebar = () => {
   sidebar.classList.toggle("close");
 };
 
-// If the window width is less than 800px, close the sidebar and remove hoverability and lock
-if (window.innerWidth < 800) {
+// Initial check for window width when the page loads
+if (window.innerWidth >= 800) {
+  // Unlock the sidebar and make it hoverable if width is 800px or more
+  sidebar.classList.remove("locked");
+  sidebar.classList.add("hoverable");
+  sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+} else {
+  // Lock the sidebar if window width is less than 800px
   sidebar.classList.add("close");
   sidebar.classList.remove("locked");
   sidebar.classList.remove("hoverable");
@@ -48,8 +54,4 @@ sidebarLockBtn.addEventListener("click", toggleLock);
 sidebar.addEventListener("mouseleave", hideSidebar);
 sidebar.addEventListener("mouseenter", showSidebar);
 sidebarOpenBtn.addEventListener("click", toggleSidebar);
-sidebarCloseBtn.addEventListener("click", toggleSidebar);
-// function toggleSidebar() {
-//     var sidebar = document.getElementById("sidebar");
-//     sidebar.classList.toggle("open");
-// }
+sidebarCloseBtn.addEventListener("click", toggleSidebar);

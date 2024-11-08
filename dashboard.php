@@ -258,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                     }
                     ?></strong> - <?php echo htmlspecialchars($post['created_at']); ?></p>
             <!-- Media seperti gambar atau video -->
-             <br>
+            <br>
             <?php if (!empty($post['media'])) {
                 $filePath = "./uploads/" . htmlspecialchars($post['media']);
                 
