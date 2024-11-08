@@ -17,8 +17,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
-    <link rel="stylesheet" href="css/posts-4.css">
-    <script src="js/posts.js" defer></script>
+    <link rel="stylesheet" href="css/posts-2.css">
 </head>
 <body>
     <nav class="navbar flex">
@@ -38,18 +37,12 @@ if (!isset($_SESSION['user_id'])) {
             <input type="file" name="media" id="media" style="display:none;">
             <label for="media" class="media-button">Choose File</label>
             <br>
-
-            <img id="imagePreview" class="media-preview" />
-            <video id="videoPreview" class="media-preview" controls></video>
-            <audio id="audioPreview" class="media-preview" controls></audio>
-            <button type="button" id="removeButton" class="remove-button">Remove File</button>
             <?php if (isset($_SESSION['login_error'])): ?>
-            <br>
             <p class="error"><?php echo htmlspecialchars($_SESSION['login_error']); ?></p>
             <?php endif; ?>
-            <br>
             <button type="submit">Post</button>
         </form>
+        <br>
         <p><a href="dashboard.php">Back to Dashboard</a></p>
     </div>
 </body>

@@ -24,7 +24,7 @@ if (empty($username) || empty($password) || empty($email) || empty($confirm_pass
 
 // Validasi apakah username mengandung spasi
 if (strpos($username, ' ') !== false) {
-    $_SESSION['register_error'] = "Username cannot contain spaces. Please use a ( _ , / , . , - ,) instead of a space.";
+    $_SESSION['register_error'] = "Username cannot contain spaces. Please use a symbol instead of a space.";
     header("Location: register.php");
     exit();
 }

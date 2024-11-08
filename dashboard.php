@@ -165,7 +165,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
     <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="js/script.js" defer></script>
-    <script src="js/reply.js" defer></script> 
 </head>
 <body>
 
@@ -202,6 +201,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                     <a href="posts-form.php" class="link flex">
                         <i class="bx bx-cloud-upload"></i>
                         <span>Upload New</span>
+                    </a>
+                </li>
+                <li class="item">
+                    <a href="logout.php" class="link flex">
+                        <i class="bx bx-log-out"></i>
+                        <span>Log out</span>
                     </a>
                 </li>
             </ul>
@@ -270,25 +275,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                         echo '<source src="' . $filePath . '" type="video/' . $fileExtension . '">';
                         echo 'Your browser does not support the video tag.';
                         echo '</video>';
-                        echo '<br>';
                     } elseif (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif'])) {
                         echo '<img src="' . $filePath . '" alt="Uploaded Image" style="max-width: 100%; height: auto;">';
-                        echo '<br>';
-                    } elseif (in_array($fileExtension, ['mp3', 'wav', 'ogg'])) { 
-                        echo '<audio controls>';
-                        echo '<source src="' . $filePath . '" type="audio/' . $fileExtension . '">';
-                        echo 'Your browser does not support the audio tag.';
-                        echo '</audio>';
-                        echo '<br>';
                     } else {
-                        echo "<p>File media tidak didukung.</p>";
+                        echo "File media tidak didukung.";
                     }
                 } else {
                     echo "<p>File tidak ditemukan.</p>";
                 }
             }
             ?>
-            <br>
             <p><?php echo htmlspecialchars($post['text']); ?></p>
             <br>
             <p>Likes: <?php echo htmlspecialchars($post['like_count']); ?> | Dislikes: <?php echo htmlspecialchars($post['dislike_count']); ?></p>
@@ -300,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                 <button type="submit" name="action" value="dislike">
                 <i class='bx bxs-dislike' ></i>
                 </button>
-                <button class="share-btn" id="shareButton" data-url="post.php?id=<?php echo $post['id']; ?>">
+                <button class="share-btn" data-url="post.php?id=<?php echo $post['id']; ?>">
                 <i class='bx bxs-share'></i>
                 </button>
             </form>
@@ -316,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
             <div class="comments">
                 <?php foreach ($comments[$post['id']] as $comment): ?>
                     <div class="comment">
-                        <strong><?php echo !empty($comment['full_name']) ? $comment['full_name'] : $comment['username']; ?>:</strong>
+                        <strong><?php echo $comment['full_name']; ?>:</strong>
                         <p><?php echo $comment['comment_text']; ?></p>
                         <small><?php echo $comment['created_at']; ?></small>
                         
@@ -327,8 +323,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                                     <div class="reply">
                                         <blockquote>
                                             <strong>
-                                                <?php echo !empty($reply['full_name']) ? $reply['full_name'] : $reply['username']; ?> >>
-                                                <?php echo !empty($comment['full_name']) ? $comment['full_name'] : $comment['username']; ?>
+                                                <?php echo $reply['full_name']; ?> >>
+                                                <?php echo $comment['full_name']; ?>
                                             </strong>
                                             <p><?php echo $reply['comment_text']; ?></p>
                                             <small><?php echo $reply['created_at']; ?></small>
@@ -354,7 +350,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
     <?php endforeach; ?>
 </div>
 
-<?php include "layout/footer.html" ?>
 
+
+
+<?php include "layout/footer.html" ?>
+<script>
+    // Script untuk share button
+    document.querySelectorAll('.share-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Post link copied to clipboard!');
+            });
+        });
+    });
+
+    // Script untuk toggle form reply
+    document.querySelectorAll('.reply-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const commentId = this.getAttribute('data-comment-id');
+            const replyForm = document.getElementById(`reply-form-${commentId}`);
+            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+        });
+    });
+</script>
 </body>
 </html>
