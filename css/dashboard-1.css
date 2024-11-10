@@ -253,7 +253,7 @@ button[value="dislike"]:hover {
 
 /* Button share dengan warna biru */
 button.share-btn {
-    background-color: #d2e4f4; /* Warna dasar biru terang */
+    background-color: #d2e4f4 /* Warna dasar biru terang */
 }
 
 button.share-btn:hover {

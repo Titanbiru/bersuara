@@ -138,8 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <br>
 
-                <label>Full Name</label>
-                <input type="text" id="full-name" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" placeholder="Full Name" required>
+                <label>Display Name</label>
+                <input type="text" id="full-name" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" placeholder="Display Name" required>
 
                 <label>Email</label>
                 <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>

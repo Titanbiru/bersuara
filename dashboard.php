@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
     <link rel="stylesheet" href="css/dashboard-1.css">
     <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="js/script.js" defer></script>
+    <script src="js/dash.js" defer></script>
 </head>
 <body>
 
@@ -289,16 +289,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
             ?>
             <p><?php echo htmlspecialchars($post['text']); ?></p>
             <br>
-            <p>Likes: <?php echo htmlspecialchars($post['like_count']); ?> | Dislikes: <?php echo htmlspecialchars($post['dislike_count']); ?></p>
+            <p><span class="like-count"> <i class='bx bx-like'></i> <?php echo htmlspecialchars($post['like_count']); ?></span> |
+            <span class="dislike-count"> <i class='bx bx-dislike' ></i> <?php echo htmlspecialchars($post['dislike_count']); ?></span></p>
             <form method="POST" action="dashboard.php">
                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                <button type="submit" name="action" value="like">
+                <button type="submit" name="action" value="like" style="left= 1px;">
                     <i class='bx bxs-like'></i>
                 </button>
                 <button type="submit" name="action" value="dislike">
                 <i class='bx bxs-dislike' ></i>
                 </button>
-                <button class="share-btn" data-url="post.php?id=<?php echo $post['id']; ?>">
+                <button class="share-btn" id="shareButton" data-url="post.php?id=<?php echo $post['id']; ?>">
                 <i class='bx bxs-share'></i>
                 </button>
             </form>
@@ -306,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
         <!-- Form untuk menambah komentar -->
         <div class="comments">
             <h4>Comments:</h4>
-            <form method="POST" action="">
+            <form method="POST" id="comment-form" action="">
                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                 <input type="text" name="comment_text" placeholder="Add a comment..." required>
                 <button type="submit">Comment</button>
@@ -314,7 +315,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
             <div class="comments">
                 <?php foreach ($comments[$post['id']] as $comment): ?>
                     <div class="comment">
-                        <strong><?php echo $comment['full_name']; ?>:</strong>
+                    <strong><?php echo !empty($comment['full_name']) ? $comment['full_name'] : $comment['username']; ?>:</strong>
                         <p><?php echo $comment['comment_text']; ?></p>
                         <small><?php echo $comment['created_at']; ?></small>
                         
@@ -324,9 +325,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                                 <?php foreach ($replies[$comment['comments_id']] as $reply): ?>
                                     <div class="reply">
                                         <blockquote>
-                                            <strong>
-                                                <?php echo $reply['full_name']; ?> >>
-                                                <?php echo $comment['full_name']; ?>
+                                        <strong>
+                                                <?php echo !empty($reply['full_name']) ? $reply['full_name'] : $reply['username']; ?> >>
+                                                <?php echo !empty($comment['full_name']) ? $comment['full_name'] : $comment['username']; ?>
                                             </strong>
                                             <p><?php echo $reply['comment_text']; ?></p>
                                             <small><?php echo $reply['created_at']; ?></small>
@@ -336,7 +337,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                             <?php endif; ?>
                         </div>
                         
-                        <div class="reply_form" id="reply-form-<?php echo $comment['comments_id']; ?>" style="display:none;">
+                        <div class="reply_form" id="reply-form-<?php echo $comment['comments_id']; ?>" id="reply-form" style="display:none;">
                             <form method="POST" action="">
                                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                                 <input type="hidden" name="reply_to_comment_id" value="<?php echo $comment['comments_id']; ?>">
@@ -357,24 +358,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
 
 <?php include "layout/footer.html" ?>
 <script>
-    // Script untuk share button
-    document.querySelectorAll('.share-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const url = this.getAttribute('data-url');
-            navigator.clipboard.writeText(url).then(() => {
-                alert('Post link copied to clipboard!');
-            });
-        });
-    });
 
-    // Script untuk toggle form reply
-    document.querySelectorAll('.reply-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const commentId = this.getAttribute('data-comment-id');
-            const replyForm = document.getElementById(`reply-form-${commentId}`);
-            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
-        });
-    });
 </script>
 </body>
 </html>

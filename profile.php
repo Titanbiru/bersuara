@@ -45,7 +45,6 @@ $total_likes = $query->fetchColumn();
     <link rel="stylesheet" href="css/profile-6.css">
     <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <script src="js/profile.js" defer></script>
-    <!-- <script src="js/sidebar.js" defer></script> -->
 </head>
 <body>
     <?php include 'layout/sidebar.php'?>
@@ -104,12 +103,24 @@ $total_likes = $query->fetchColumn();
                     
                     // Cek apakah ada media video
                     if (!empty($post['media'])) {
-                        echo "<video width='320' height='240' controls>";
-                        echo "<source src='uploads/" . htmlspecialchars($post['media']) . "' type='video/mp4'>";
-                        echo "Your browser does not support the video tag.";
-                        echo "</video>";
-                    }
-                    
+                      // Get file extension
+                      $file_extension = pathinfo($post['media'], PATHINFO_EXTENSION);
+                      
+                      // Display video if the file is a video
+                      if (in_array($file_extension, ['mp4', 'webm', 'ogg'])) {
+                          echo "<video width='320' height='240' controls>";
+                          echo "<source src='uploads/" . htmlspecialchars($post['media']) . "' type='video/" . htmlspecialchars($file_extension) . "'>";
+                          echo "Your browser does not support the video tag.";
+                          echo "</video>";
+                      }
+                      // Display audio if the file is an audio
+                      elseif (in_array($file_extension, ['mp3', 'wav', 'ogg'])) {
+                          echo "<audio controls>";
+                          echo "<source src='uploads/" . htmlspecialchars($post['media']) . "' type='audio/" . htmlspecialchars($file_extension) . "'>";
+                          echo "Your browser does not support the audio tag.";
+                          echo "</audio>";
+                      }
+                  }                  
                     echo "<span class='post-time'>" . htmlspecialchars($post['created_at']) . "</span>";
                     echo "</div>";
                 }
