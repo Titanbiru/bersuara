@@ -38,7 +38,7 @@ body {
   padding: 15px 10px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   transition: all 0.4s ease;
-  z-index: 2;
+  z-index: 5;
 }
 .sidebar.close {
   width: calc(55px + 20px);
@@ -118,6 +118,7 @@ body {
   border-radius: 8px;
   margin-bottom: 8px;
   color: #707070;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 .link:hover {
   color: #fff;
@@ -136,19 +137,40 @@ body {
   border-radius: 4px;
 }
 
+.profile-letter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  height: 40px;
+  width: 40px;
+  background-color: #ffffff;
+  color: #333;
+  font-size: 18px;
+  border-radius: 50%;
+  text-align: center;
+}
+
 .sidebar_profile {
-  padding-top: 15px;
-  margin-top: 15px;
+  text-align: center;
   gap: 15px;
+  margin-top: 10px;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
 }
-.sidebar_profile .name {
+
+.sidebar_profile img {
+  margin-top: 10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.sidebar .profile-section .name {
   font-size: 18px;
   color: #333;
-}
-.sidebar_profile .email {
-  font-size: 15px;
-  color: #333;
+  font-weight: bold;
 }
 
 /* Navbar */
@@ -184,9 +206,9 @@ body {
   font-size: 30px;
 }
 /* Responsive */
-@media screen and (max-width: 1100px) {
+@media screen and (min-width: 800px) {
   .navbar {
-    left: 65%;
+    left: 50%;
   }
 }
 @media screen and (max-width: 800px) {

@@ -6,12 +6,12 @@
 }
 
 body {
-    font-family: "Poppins", sans-serif;
-    background-color: #947CAC;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    height: 100vh;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  height: 100vh;
+  margin: 0;
+  background-color: #947CAC;
+  justify-content: flex-start;
 }
 .flex {
   display: flex;
@@ -40,7 +40,7 @@ body {
   padding: 15px 10px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   transition: all 0.4s ease;
-  z-index: 2;
+  z-index: 5;
 }
 .sidebar.close {
   width: calc(55px + 20px);
@@ -120,6 +120,7 @@ body {
   border-radius: 8px;
   margin-bottom: 8px;
   color: #707070;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 .link:hover {
   color: #fff;
@@ -138,20 +139,6 @@ body {
   border-radius: 4px;
 }
 
-.sidebar_profile {
-  padding-top: 15px;
-  margin-top: 15px;
-  gap: 15px;
-  border-top: 2px solid rgba(0, 0, 0, 0.1);
-}
-.sidebar_profile .name {
-  font-size: 18px;
-  color: #333;
-}
-.sidebar_profile .email {
-  font-size: 15px;
-  color: #333;
-}
 
 /* Navbar */
 .navbar {
@@ -166,7 +153,7 @@ body {
   border: 1px solid black;
   border-radius: 0 0 8px 8px;
   justify-content: space-between;
-  z-index: 2;
+  z-index: 3;
 }
 #sidebar-open {
   font-size: 30px;
@@ -176,6 +163,28 @@ body {
   display: none;
 }
   
+.sidebar_profile {
+  text-align: center;
+  gap: 15px;
+  margin-top: 10px;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.sidebar_profile img {
+  margin-top: 10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.sidebar .profile-section .name {
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+}
+
 .navbar img {
   height: 40px;
   width: 40px;
@@ -186,11 +195,10 @@ body {
   font-size: 30px;
 }
 /* Responsive */
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 800px) {
   .navbar {
     left: 65%;
   }
-
 }
 @media screen and (max-width: 800px) {
   .sidebar {
@@ -216,35 +224,76 @@ body {
   }
 }
 
+
 /* Profile Container */
 .profile-container {
-    margin-top: 70px;
+    margin-top: 90px;
     width: 100%;
+    text-align: left; 
+    margin-left: 0;
+    padding-left: 0;
+    width: 100%; 
+    box-sizing: border-box;
 }
 .content{
   box-sizing: border-box;
+  padding-left: 0;
 }
 .profile-container h1 {
     color: #ffffff;
     font-size: 24px;
     margin-bottom: 20px;
 }
-
+/* Untuk tampilan desktop (lebar layar > 800px) */
 @media screen and (min-width: 800px) {
   .profile-container,
-  .content,.user-posts {
-    padding-left: 40px; /* Kembalikan padding kiri untuk tampilan desktop */
-    padding-right: 0; /* Opsional: Tambahkan padding kanan agar seimbang */
-    width: calc(100% - 30px); /* Sesuaikan lebar konten untuk mengimbangi padding */
+  .content,
+  .user-posts {
+    padding-left: 5px;  /* Memberikan ruang di kiri untuk konten */
+    padding-right: 10px; /* Memberikan ruang di kanan untuk konten */
+    width: calc(100% - 20px); /* Menyesuaikan lebar konten agar seimbang dengan padding kiri dan kanan */
+  }
+  .profile-container{
+    margin-left: -20px;  /* Memberikan jarak ke kiri agar konten tetap terlihat */
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Mengatur konten agar responsif dan memiliki jarak yang nyaman */
+  .content {
+    max-width: 1200px;  /* Menentukan lebar maksimum agar konten tidak terlalu lebar di layar besar */
   }
 }
 
+/* Untuk tampilan mobile (lebar layar <= 800px) */
 @media screen and (max-width: 800px) {
   .profile-container,
-  .content,.user-posts {
-    padding-left: 10px; /* Hilangkan padding kiri saat di mobile */
-    padding-right: 10px; /* Opsional: Hilangkan padding kanan juga jika diperlukan */
-    width: 100%; /* Pastikan lebar konten memenuhi layar */
+  .content,
+  .user-posts {
+    margin-right: 10px;  
+    margin-left: 0;
+    padding-right: 5px; 
+    width: 100%;  
+    margin: 0;  
+  }
+
+  .profile-container{
+    margin-left: -70px;
+    padding-left: 0;
+    padding-right: 10px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .user-posts{
+    margin-left: -20px;
+  }
+  
+  /* Menambahkan jarak di atas agar konten tidak menabrak navbar */
+  .content {
+    margin-left: -30px;
+    padding-top: 60px;  /* Jarak atas agar konten tidak tertutup navbar */
+    max-width: 100%;  /* Konten menggunakan lebar penuh */
   }
 }
 
@@ -287,7 +336,6 @@ body {
     margin-left: 10px;
 }
 
-
 .profile-pic img {
     width: 150px;
     height: 150px;
@@ -315,14 +363,29 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 35px;
-  height: 35px;
-  background-color: #68507b;
+  margin-top: 10px;
+  height: 40px;
+  width: 40px;
+  background-color: #ffffff;
   color: #333;
   font-size: 18px;
-  font-weight: bold;
   border-radius: 50%;
   text-align: center;
+}
+
+.post {
+  position: relative; 
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.post-content {
+  margin-right: 40px; /* Give space for the delete button */
+  max-width: 100%;
+  width: 100%;
 }
 
 .user-posts {
@@ -355,4 +418,46 @@ body {
     display: grid;
     justify-content: left;
     margin-top: 15px;
+}
+
+.post-media {
+    width: 100%;
+    height: 100%;
+    max-width: 320px;
+    border-radius: 8px; /* Jika ingin sudut membulat */
+    object-fit: cover;
+    margin-top: 8px;
+}
+
+.audio-container{
+  margin: 0;
+  max-width: 100%;
+}
+
+.audio-container audio{
+  width: 100%;
+  height: auto;
+}
+
+video {
+  max-width: 320px;   /* memastikan video mengisi kontainer */
+  max-height: 240px; /* memastikan tinggi tidak melebihi 240px */
+  width: auto;       /* lebar otomatis untuk menjaga rasio */
+  height: auto;      /* tinggi otomatis untuk menjaga rasio */
+}
+
+/* Untuk perangkat dengan layar lebih besar dari 1024px (Desktop) */
+@media (min-width: 1024px) {
+  video {
+      max-width: 320px;  
+      max-height: 240px; 
+  }
+}
+
+/* Untuk perangkat mobile dan tablet dengan lebar kurang dari 1024px */
+@media (max-width: 1023px) {
+  video {
+      max-width: 100%;   /* Lebar maksimal mengikuti lebar kontainer */
+      max-height: 240px; /* Tinggi maksimum tetap 240px */
+  }
 }

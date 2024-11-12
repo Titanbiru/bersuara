@@ -167,15 +167,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
     <script src="js/dash.js" defer></script>
 </head>
 <body>
-
 <nav class="sidebar locked">
     <div class="logo_items flex">
         <span class="nav_image">
             <img src="CN.jpg" alt="logo_img" />
         </span>
         <span class="logo_name">Bersuara</span>
-        <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
-        <i class="bx bx-x" id="sidebar-close"></i>
+        <i class="bx bx-x" id="sidebar-close" title="Unlock Sidebar"></i>
+        <i class="bx bx-lock-alt" id="lock-icon"></i>
     </div>
 
         <div class="menu_container">
@@ -193,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                 </li>
                 <li class="item">
                     <a href="profile.php" class="link flex">
-                    <i class='bx bxs-user-rectangle'></i>
+                        <i class='bx bxs-user-rectangle'></i>
                         <span>Profile</span>
                     </a>
                 </li>
@@ -235,14 +234,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
     </div>
 </nav>
 
-    <!-- Navbar -->
-    <nav class="navbar flex">
-        <i class="bx bx-menu" id="sidebar-open"></i>
-        <span><h1><b>Bersuara</b></h1></span>
-        <span class="nav_image">
-            <img src="cn bersuara.jpg" alt="logo_img" />
-        </span>
-    </nav>
+<nav class="navbar flex">
+    <i class="bx bx-menu" id="sidebar-open"></i>
+    <span><h1><b>Bersuara</b></h1></span>
+    <span class="nav_image">
+        <img src="cn bersuara.jpg" alt="logo_img" />
+    </span>
+</nav>
 
     <br><br><br>
 
@@ -274,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                         echo '<img src="' . $filePath . '" alt="Uploaded Image" style="max-width: 100%; height: auto;">';
                         echo '<br>';
                     } elseif (in_array($fileExtension, ['mp3', 'wav', 'ogg'])) { 
-                        echo '<audio controls>';
+                        echo '<audio controls loop style="max-width: 100%;" controls>';
                         echo '<source src="' . $filePath . '" type="audio/' . $fileExtension . '">';
                         echo 'Your browser does not support the audio tag.';
                         echo '</audio>';
@@ -293,10 +291,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
             <span class="dislike-count"> <i class='bx bx-dislike' ></i> <?php echo htmlspecialchars($post['dislike_count']); ?></span></p>
             <form method="POST" action="dashboard.php">
                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                <button type="submit" name="action" value="like" style="left= 1px;">
+                <button type="submit" name="action" class="like-btn" value="like" style="left= 1px;">
                     <i class='bx bxs-like'></i>
                 </button>
-                <button type="submit" name="action" value="dislike">
+                <button type="submit" name="action" class="dilike-btn" value="dislike">
                 <i class='bx bxs-dislike' ></i>
                 </button>
                 <button class="share-btn" id="shareButton" data-url="post.php?id=<?php echo $post['id']; ?>">

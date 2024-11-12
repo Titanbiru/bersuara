@@ -4,8 +4,8 @@
             <img src="CN.jpg" alt="logo_img" />
         </span>
         <span class="logo_name">Bersuara</span>
-        <i class="bx bx-lock-alt" id="lock-icon" title="Unlock Sidebar"></i>
-        <i class="bx bx-x" id="sidebar-close"></i>
+        <i class="bx bx-x" id="sidebar-close" title="Unlock Sidebar"></i>
+        <i class="bx bx-lock-alt" id="lock-icon"></i>
     </div>
 
         <div class="menu_container">

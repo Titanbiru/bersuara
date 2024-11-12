@@ -9,10 +9,10 @@
       sidebar.classList.toggle("locked");
       if (sidebar.classList.contains("locked")) {
         sidebar.classList.remove("hoverable");
-        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+        sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
       } else {
         sidebar.classList.add("hoverable");
-        sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
       }
     };
     
@@ -67,85 +67,4 @@
     
     // Make sure the sidebar is hidden when page loads if in mobile view
     document.addEventListener("DOMContentLoaded", checkSidebarLock);
-
     
-document.querySelectorAll('.reply-btn').forEach(button => {
-  button.addEventListener('click', function() {
-      const commentId = this.getAttribute('data-comment-id');
-      const replyForm = document.getElementById(`reply-form-${commentId}`);
-      replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
-  });
-});
-
-document.getElementById("shareButton").addEventListener("click", async () => {
-  const shareData = {
-      title: 'Judul Postingan',
-      text: 'Ini adalah isi dari postingan yang akan dibagikan',
-      url: window.location.href // URL halaman saat ini atau URL dari posting
-  };
-
-  try {
-      await navigator.share(shareData);
-      console.log("Berbagi berhasil");
-  } catch (error) {
-      console.log("Berbagi gagal:", error);
-  }
-});
-    $('.like-btn, .dislike-btn').click(function() {
-      var postId = $(this).closest('.post').data('post-id');
-      var action = $(this).data('action'); // 'like' atau 'dislike'
-  
-      $.ajax({
-          url: '../dashboard.php', // File PHP untuk memproses
-          type: 'POST',
-          data: { post_id: postId, action: action },
-          success: function(response) {
-              var data = JSON.parse(response);
-              $('.like-count').text(data.likeCount);
-              $('.dislike-count').text(data.dislikeCount);
-          }
-      });
-  });
-
-  $('.comment-form').submit(function(e) {
-    e.preventDefault();
-
-    var postId = $(this).closest('.post').data('post-id');
-    var commentText = $(this).find('textarea').val();
-
-    $.ajax({
-        url: '../process-cmd-rply.php',
-        type: 'POST',
-        data: { post_id: postId, comment: commentText },
-        success: function(response) {
-            var data = JSON.parse(response);
-            // Menambahkan komentar baru ke bagian komentar
-            $('.comments').prepend('<p>' + data.username + ': ' + data.comment + '</p>');
-            // Kosongkan textarea setelah kirim
-            $(this).find('textarea').val('');
-        }
-    });
-});
-
-$('.reply-btn').click(function() {
-  $(this).siblings('.reply-form').toggle(); // Menampilkan form balasan
-});
-
-$('.reply-form').submit(function(e) {
-  e.preventDefault();
-
-  var commentId = $(this).closest('.comment').data('comment-id');
-  var replyText = $(this).find('textarea').val();
-
-  $.ajax({
-      url: '../process-cmd-rply.php',
-      type: 'POST',
-      data: { comment_id: commentId, reply: replyText },
-      success: function(response) {
-          var data = JSON.parse(response);
-          // Menambahkan balasan baru
-          $('.replies').prepend('<p>' + data.username + ': ' + data.reply + '</p>');
-          $(this).find('textarea').val(''); // Kosongkan textarea setelah kirim
-      }
-  });
-});

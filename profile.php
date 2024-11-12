@@ -26,14 +26,40 @@ $statement = $pdo->prepare($query);
 $statement->execute([$user_id]);
 $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-$query = $pdo->prepare("
-    SELECT COUNT(likes.id) AS total_likes
+$query = $pdo->prepare("SELECT COUNT(likes.id) AS total_likes
     FROM posts
     JOIN likes ON posts.id = likes.post_id
     WHERE posts.user_id = :user_id
 ");
 $query->execute(['user_id' => $user_id]);
 $total_likes = $query->fetchColumn();
+
+
+if (isset($_GET['post_id'])) {
+  $post_id = $_GET['post_id'];
+  
+  // Pastikan hanya pengguna yang membuat post yang bisa menghapusnya
+  $check_query = "SELECT user_id FROM posts WHERE id = ?";
+  $check_statement = $pdo->prepare($check_query);
+  $check_statement->execute([$post_id]);
+  $post = $check_statement->fetch(PDO::FETCH_ASSOC);
+  
+  if ($post && $post['user_id'] == $user_id) {
+      // Query DELETE untuk menghapus post
+      $delete_query = "DELETE FROM posts WHERE id = ?";
+      $delete_statement = $pdo->prepare($delete_query);
+      
+      if ($delete_statement->execute([$post_id])) {
+          echo "Post deleted successfully.";
+      } else {
+          echo "Failed to delete post.";
+      }
+  } else {
+      echo "You are not authorized to delete this post.";
+  }
+} else {
+  echo "No post_id found.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +68,7 @@ $total_likes = $query->fetchColumn();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="css/profile-6.css">
+    <link rel="stylesheet" href="css/profile-2.css">
     <link flex href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <script src="js/profile.js" defer></script>
 </head>
@@ -53,21 +79,22 @@ $total_likes = $query->fetchColumn();
         <div class="content">
             <h1>Your Profile</h1>
             <div class="profile-details">
-            <div class="profile-pic">
+            <div class="profile-pic" id="profilePicModal">
                 <?php
                 if (!empty($user['profile_picture'])) {
+                    // Menampilkan gambar profil jika tersedia
                     echo '<img src="uploads/' . htmlspecialchars($user['profile_picture']) . '" alt="Profile Picture">';
                 } else {
+                    // Jika gambar profil tidak ada, tampilkan inisial
                     if (!empty($user['full_name'])) {
+                        // Ambil inisial dari nama lengkap
                         $full_name_parts = explode(' ', htmlspecialchars($user['full_name']));
-                        $initial = strtoupper($full_name_parts[0][0]); 
+                        $initial = strtoupper($full_name_parts[0][0]);
                     } else {
-                        if (!empty($user['username'])) {
-                            $initial = strtoupper($user['username'][0]);
-                        } else {
-                            $initial = 'U';
-                        }
+                        // Jika nama lengkap tidak ada, ambil inisial dari username
+                        $initial = !empty($user['username']) ? strtoupper($user['username'][0]) : 'U';
                     }
+                    // Tampilkan inisial dalam sebuah div
                     echo '<div class="profile-initial">' . $initial . '</div>';
                 }
                 ?>
@@ -98,31 +125,33 @@ $total_likes = $query->fetchColumn();
             
             if ($posts) {
                 foreach ($posts as $post) {
+                    // Inside the loop where posts are displayed
                     echo "<div class='post'>";
+                    echo "<div class='media-warapper'>";
+                    echo "<div class='post-content'>";
                     echo "<p>" . htmlspecialchars($post['text']) . "</p>";
-                    
-                    // Cek apakah ada media video
+
+                  // Display media (video or audio) if available
                     if (!empty($post['media'])) {
-                      // Get file extension
-                      $file_extension = pathinfo($post['media'], PATHINFO_EXTENSION);
-                      
-                      // Display video if the file is a video
-                      if (in_array($file_extension, ['mp4', 'webm', 'ogg'])) {
-                          echo "<video width='320' height='240' controls>";
-                          echo "<source src='uploads/" . htmlspecialchars($post['media']) . "' type='video/" . htmlspecialchars($file_extension) . "'>";
-                          echo "Your browser does not support the video tag.";
-                          echo "</video>";
-                      }
-                      // Display audio if the file is an audio
-                      elseif (in_array($file_extension, ['mp3', 'wav', 'ogg'])) {
-                          echo "<audio controls>";
-                          echo "<source src='uploads/" . htmlspecialchars($post['media']) . "' type='audio/" . htmlspecialchars($file_extension) . "'>";
-                          echo "Your browser does not support the audio tag.";
-                          echo "</audio>";
-                      }
-                  }                  
+                        $file_extension = pathinfo($post['media'], PATHINFO_EXTENSION);
+                        if (in_array($file_extension, ['mp4', 'webm', 'ogg'])) {
+                            echo "<video class='post-media' controls>";
+                            echo "<source src='uploads/" . htmlspecialchars($post['media']) . "' type='video/" . htmlspecialchars($file_extension) . "'>";
+                            echo "Your browser does not support the video tag.";
+                            echo "</video>";
+                        } elseif (in_array($file_extension, ['mp3', 'wav', 'ogg'])) {
+                            echo "<audio class='audio-container' controls>";
+                            echo "<source src='uploads/" . htmlspecialchars($post['media']) . "' type='audio/" . htmlspecialchars($file_extension) . "'>";
+                            echo "Your browser does not support the audio tag.";
+                            echo "</audio>";
+                    }
+                    }
+
                     echo "<span class='post-time'>" . htmlspecialchars($post['created_at']) . "</span>";
-                    echo "</div>";
+                    echo "</div>"; 
+                    echo "</div>"; 
+
+                  echo "</div>"; // Close post
                 }
             } else {
                 echo "<p>You haven't made any posts yet.</p>";
@@ -143,10 +172,10 @@ const toggleLock = () => {
   sidebar.classList.toggle("locked");
   if (sidebar.classList.contains("locked")) {
     sidebar.classList.remove("hoverable");
-    sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+    sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt"); 
   } else {
     sidebar.classList.add("hoverable");
-    sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+    sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
   }
 };
 
@@ -198,9 +227,6 @@ sidebar.addEventListener("mouseout", closeSidebarOnLeave);  // Close sidebar whe
 
 // Ensure the sidebar state updates when window is resized
 window.addEventListener("resize", checkSidebarLock);
-
-// Make sure the sidebar is hidden when page loads if in mobile view
-document.addEventListener("DOMContentLoaded", checkSidebarLock);
 </script>
 </body>
 </html>

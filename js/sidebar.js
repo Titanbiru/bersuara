@@ -9,10 +9,10 @@
       sidebar.classList.toggle("locked");
       if (sidebar.classList.contains("locked")) {
         sidebar.classList.remove("hoverable");
-        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+        sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
       } else {
         sidebar.classList.add("hoverable");
-        sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
       }
     };
     

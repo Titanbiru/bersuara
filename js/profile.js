@@ -1,19 +1,3 @@
-// Modal untuk mengganti gambar profil
-function openProfilePicModal() {
-    document.getElementById("profile-pic-modal").style.display = "flex";
-}
-
-function closeProfilePicModal() {
-    document.getElementById("profile-pic-modal").style.display = "none";
-}
-
-// Event listener untuk menangani klik di luar modal (untuk menutup modal)
-window.onclick = function(event) {
-    if (event.target === document.getElementById("profile-pic-modal")) {
-        closeProfilePicModal();
-    }
-};
-
 // Fungsi untuk menangani like post
 function likePost(postId) {
     alert("You liked post " + postId);
@@ -27,55 +11,6 @@ function deletePost(postId) {
         // Add your code to send a request to the server to delete the post.
     }
 }
-// Function to open the profile picture modal
-function openProfilePicModal() {
-    document.getElementById("profile-pic-modal").style.display = "flex";
-}
-
-// Function to close the profile picture modal
-function closeProfilePicModal() {
-    document.getElementById("profile-pic-modal").style.display = "none";
-}
-
-// Close modal if clicked outside the modal content
-window.onclick = function(event) {
-    if (event.target === document.getElementById("profile-pic-modal")) {
-        closeProfilePicModal();
-    }
-}
-
-
-
-// Optional: you can add a delay to give a smoother effect
-document.addEventListener('DOMContentLoaded', function () {
-    const profilePicModal = document.getElementById('profile-pic-modal');
-    const closeBtn = document.querySelector('.close');
-
-    // Add smooth fade-in effect for modal
-    profilePicModal.style.transition = 'opacity 0.5s ease';
-
-    // Open modal with a fade-in effect
-    function openModal() {
-        profilePicModal.style.opacity = '1';
-        profilePicModal.style.display = 'flex';
-    }
-
-    // Close modal with a fade-out effect
-    function closeModal() {
-        profilePicModal.style.opacity = '0';
-        setTimeout(() => {
-            profilePicModal.style.display = 'none';
-        }, 500); // Match this timeout with the fade effect duration
-    }
-
-    closeBtn.addEventListener('click', closeModal);
-
-    window.onclick = function(event) {
-        if (event.target === profilePicModal) {
-            closeModal();
-        }
-    }
-});
 function myFunction() {
     var x = document.getElementById("password");
     if (x.type === "password") {
@@ -84,3 +19,37 @@ function myFunction() {
         x.type = "password";
     }
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Menangani klik tombol delete
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.getAttribute('data-post-id');
+                
+                // Konfirmasi penghapusan
+                const confirmation = confirm('Are you sure you want to delete this post?');
+                if (!confirmation) return;
+    
+                // Mengirim permintaan AJAX ke delete_post.php
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '../delete-post-pfp.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Jika penghapusan berhasil, hapus elemen post dari tampilan
+                        const postElement = document.getElementById('post-' + postId);
+                        if (postElement) {
+                            postElement.remove();
+                        }
+                        alert('Post deleted successfully.');
+                    } else {
+                        alert('Failed to delete post.');
+                    }
+                };
+                xhr.send('post_id=' + postId);
+            });
+        });
+    });
+    

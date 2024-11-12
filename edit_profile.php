@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="css/edit_profile4.css">
+    <link rel="stylesheet" href="css/edit_profile3.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="js/sidebar.js" defer></script>
 </head>
@@ -116,9 +116,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="content">
             <h1>Edit Profile</h1>
-            
             <form method="POST" action="edit_profile.php" enctype="multipart/form-data" id="edit-profile-form">
                 <label>Profile Picture</label><br>
+                <div class="profile-picture-section">
+                    <label>Current Profile Picture</label>
+                    <div class="current-profile-picture">
+                        <?php if (!empty($user['profile_picture'])): ?>
+                            <img src="uploads/<?php echo htmlspecialchars($user['profile_picture']); ?>" alt="Current Profile Picture" id="current-profile-pic">
+                        <?php else: ?>
+                            <p>No profile picture uploaded</p>
+                        <?php endif; ?>
+                    </div>
+
+                    <label>New Profile Picture Preview</label>
+                    <div class="new-profile-picture-preview">
+                        <img id="new-profile-pic-preview" src="#" alt="New Profile Picture Preview" style="display: none;">
+                    </div>
+                </div>
                 <div style="position: relative;">
                     <input type="file" name="profile_picture" id="profile_picture" accept="image/*" style="display: none;">
                     <label for="profile_picture" class="profile-pic-button">Choose Profile Picture</label>
@@ -159,75 +173,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
     <script>
-            // Selecting the sidebar and buttons
-const sidebar = document.querySelector(".sidebar");
-const sidebarOpenBtn = document.querySelector("#sidebar-open");
-const sidebarCloseBtn = document.querySelector("#sidebar-close");
-const sidebarLockBtn = document.querySelector("#lock-icon");
-
-// Function to toggle the lock state of the sidebar
-const toggleLock = () => {
-  sidebar.classList.toggle("locked");
-  if (sidebar.classList.contains("locked")) {
-    sidebar.classList.remove("hoverable");
-    sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
-  } else {
-    sidebar.classList.add("hoverable");
-    sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
-  }
-};
-
-// Function to show and hide the sidebar
-const toggleSidebar = () => {
-  sidebar.classList.toggle("close");
-};
-
-// Function to open the sidebar on hover (on mouseover)
-const openSidebarOnHover = () => {
-  if (sidebar.classList.contains("locked")) {
-    sidebar.classList.remove("close"); // Open the sidebar when hovered
-  }
-};
-
-// Function to close the sidebar when the mouse leaves (on mouseout)
-const closeSidebarOnLeave = () => {
-  if (sidebar.classList.contains("locked")) {
-    sidebar.classList.add("close"); // Close the sidebar when mouse leaves
-  }
-};
-
-// Initial check for window width when the page loads
-const checkSidebarLock = () => {
-  if (window.innerWidth >= 800) {
-    // For desktop: Sidebar should be locked and closed
-    sidebar.classList.add("locked", "close"); // Sidebar closed and locked by default
-    sidebar.classList.remove("hoverable");
-    sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
-  } else {
-    // For mobile: Sidebar should be locked and closed initially
-    sidebar.classList.add("locked", "close"); // Sidebar closed and locked by default
-    sidebar.classList.remove("hoverable");
-    sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
-  }
-};
-
-// Run the function to check sidebar lock status
-checkSidebarLock();
-
-// Adding event listeners to buttons and sidebar for the corresponding actions
-sidebarLockBtn.addEventListener("click", toggleLock);
-sidebarOpenBtn.addEventListener("click", toggleSidebar);
-sidebarCloseBtn.addEventListener("click", toggleSidebar);
-
-// Adding hover behavior to the sidebar
-sidebar.addEventListener("mouseover", openSidebarOnHover);  // Open sidebar when mouse enters
-sidebar.addEventListener("mouseout", closeSidebarOnLeave);  // Close sidebar when mouse leaves
-
-// Ensure the sidebar state updates when window is resized
-window.addEventListener("resize", checkSidebarLock);
-
-// Make sure the sidebar is hidden when page loads if in mobile view
-document.addEventListener("DOMContentLoaded", checkSidebarLock);
+    // Selecting the sidebar and buttons
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarOpenBtn = document.querySelector("#sidebar-open");
+    const sidebarCloseBtn = document.querySelector("#sidebar-close");
+    const sidebarLockBtn = document.querySelector("#lock-icon");
+    
+    // Function to toggle the lock state of the sidebar
+    const toggleLock = () => {
+      sidebar.classList.toggle("locked");
+      if (sidebar.classList.contains("locked")) {
+        sidebar.classList.remove("hoverable");
+        sidebarLockBtn.classList.replace("bx-lock-alt", "bx-lock-open-alt");
+      } else {
+        sidebar.classList.add("hoverable");
+        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+      }
+    };
+    
+    // Function to show and hide the sidebar
+    const toggleSidebar = () => {
+      sidebar.classList.toggle("close");
+    };
+    
+    // Function to open the sidebar on hover (on mouseover)
+    const openSidebarOnHover = () => {
+      if (sidebar.classList.contains("locked")) {
+        sidebar.classList.remove("close"); // Open the sidebar when hovered
+      }
+    };
+    
+    // Function to close the sidebar when the mouse leaves (on mouseout)
+    const closeSidebarOnLeave = () => {
+      if (sidebar.classList.contains("locked")) {
+        sidebar.classList.add("close"); // Close the sidebar when mouse leaves
+      }
+    };
+    
+    // Initial check for window width when the page loads
+    const checkSidebarLock = () => {
+      if (window.innerWidth >= 800) {
+        // For desktop: Sidebar should be locked and closed
+        sidebar.classList.add("locked", "close"); // Sidebar closed and locked by default
+        sidebar.classList.remove("hoverable");
+        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+      } else {
+        // For mobile: Sidebar should be locked and closed initially
+        sidebar.classList.add("locked", "close"); // Sidebar closed and locked by default
+        sidebar.classList.remove("hoverable");
+        sidebarLockBtn.classList.replace("bx-lock-open-alt", "bx-lock-alt");
+      }
+    };
+    
+    // Run the function to check sidebar lock status
+    checkSidebarLock();
+    
+    // Adding event listeners to buttons and sidebar for the corresponding actions
+    sidebarLockBtn.addEventListener("click", toggleLock);
+    sidebarOpenBtn.addEventListener("click", toggleSidebar);
+    sidebarCloseBtn.addEventListener("click", toggleSidebar);
+    
+    // Adding hover behavior to the sidebar
+    sidebar.addEventListener("mouseover", openSidebarOnHover);  // Open sidebar when mouse enters
+    sidebar.addEventListener("mouseout", closeSidebarOnLeave);  // Close sidebar when mouse leaves
+    
+    // Ensure the sidebar state updates when window is resized
+    window.addEventListener("resize", checkSidebarLock);
+    
+    // Make sure the sidebar is hidden when page loads if in mobile view
+    document.addEventListener("DOMContentLoaded", checkSidebarLock);
+    
 
     </script>
     <script src="js/edit_profile.js"></script>
