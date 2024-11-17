@@ -68,3 +68,115 @@
     // Make sure the sidebar is hidden when page loads if in mobile view
     document.addEventListener("DOMContentLoaded", checkSidebarLock);
     
+        // Fungsi untuk berbagi melalui API Web Share jika didukung
+    function copyToClipboard() {
+      // Dapatkan URL dari atribut data-url
+      const shareButton = document.getElementById('shareButton');
+      const url = shareButton.getAttribute('data-url');
+  
+      // Buat elemen input sementara untuk menyalin teks
+      const tempInput = document.createElement('input');
+      tempInput.value = url;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+  
+      // Opsional: tambahkan notifikasi setelah URL disalin
+      alert("URL telah disalin ke clipboard!");
+  }
+  
+  document.querySelectorAll('.reply-btn').forEach(button => {
+  button.addEventListener('click', function() {
+      const commentId = this.getAttribute('data-comment-id');
+      const replyForm = document.getElementById(`reply-form-${commentId}`);
+      replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+  });
+});
+function toggleReplyForm(commentId) {
+  var form = document.getElementById('reply-form-' + commentId);
+  if (form.style.display === "none" || form.style.display === "") {
+      form.style.display = "block";
+  } else {
+      form.style.display = "none";
+  }
+}
+document.querySelectorAll('.share-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const title = button.getAttribute('data-title');
+        const text = button.getAttribute('data-text');
+        const url = button.getAttribute('data-url');
+
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: text,
+                url: url
+            }).then(() => {
+                console.log('Successfully shared');
+            }).catch(error => {
+                console.error('Something went wrong sharing', error);
+            });
+        } else {
+            alert("Sharing not supported on this browser.");
+        }
+    });
+});
+    $('.like-btn, .dislike-btn').click(function() {
+      var postId = $(this).closest('.post').data('post-id');
+      var action = $(this).data('action'); // 'like' atau 'dislike'
+  
+      $.ajax({
+          url: '../dashboard.php', // File PHP untuk memproses
+          type: 'POST',
+          data: { post_id: postId, action: action },
+          success: function(response) {
+              var data = JSON.parse(response);
+              $('.like-count').text(data.likeCount);
+              $('.dislike-count').text(data.dislikeCount);
+          }
+      });
+  });
+
+  $('.comment-form').submit(function(e) {
+    e.preventDefault();
+
+    var postId = $(this).closest('.post').data('post-id');
+    var commentText = $(this).find('textarea').val();
+
+    $.ajax({
+        url: '../process-cmd-rply.php',
+        type: 'POST',
+        data: { post_id: postId, comment: commentText },
+        success: function(response) {
+            var data = JSON.parse(response);
+            // Menambahkan komentar baru ke bagian komentar
+            $('.comments').prepend('<p>' + data.username + ': ' + data.comment + '</p>');
+            // Kosongkan textarea setelah kirim
+            $(this).find('textarea').val('');
+        }
+    });
+});
+
+$('.reply-btn').click(function() {
+  $(this).siblings('.reply-form').toggle(); // Menampilkan form balasan
+});
+
+$('.reply-form').submit(function(e) {
+  e.preventDefault();
+
+  var commentId = $(this).closest('.comment').data('comment-id');
+  var replyText = $(this).find('textarea').val();
+
+  $.ajax({
+      url: '../process-cmd-rply.php',
+      type: 'POST',
+      data: { comment_id: commentId, reply: replyText },
+      success: function(response) {
+          var data = JSON.parse(response);
+          // Menambahkan balasan baru
+          $('.replies').prepend('<p>' + data.username + ': ' + data.reply + '</p>');
+          $(this).find('textarea').val(''); // Kosongkan textarea setelah kirim
+      }
+  });
+})

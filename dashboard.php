@@ -297,8 +297,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_text'])) {
                 <button type="submit" name="action" class="dilike-btn" value="dislike">
                 <i class='bx bxs-dislike' ></i>
                 </button>
-                <button class="share-btn" id="shareButton" data-url="post.php?id=<?php echo $post['id']; ?>">
-                <i class='bx bxs-share'></i>
+                <button class="share-btn" 
+                    data-title="<?php echo htmlspecialchars($post['title'] ?? ''); ?>" 
+                    data-text="<?php echo htmlspecialchars($post['text'] ?? ''); ?>" 
+                    data-url="sharePost.php?post_id=<?php echo $post['id']; ?>"> 
+                    <i class='bx bxs-share'></i>
                 </button>
             </form>
             <br>

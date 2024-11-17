@@ -1,51 +1,70 @@
 <?php
 session_start();
-include('db_connection.php');
+include('database/db.php');
 
 // Cek apakah user sudah login
 if (!isset($_SESSION['user_id'])) {
     die('Harus login terlebih dahulu');
 }
 
-$post_id = $_POST['post_id'];
-$comment = $_POST['comment'];
-$user_id = $_SESSION['user_id'];
 
-// Masukkan komentar ke database
-$query = "INSERT INTO comments (post_id, user_id, comment) VALUES ('$post_id', '$user_id', '$comment')";
-mysqli_query($conn, $query);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $post_id = $_POST['post_id'];
+    $comment_text = $_POST['comment'];
+    $user_id = 1;  // Ganti dengan ID pengguna yang sedang login
 
-// Ambil username dari user yang memberikan komentar
-$query = "SELECT username FROM users WHERE user_id = '$user_id'";
-$result = mysqli_query($conn, $query);
-$username = mysqli_fetch_assoc($result)['username'];
+    // Insert komentar ke dalam database
+    $query = "INSERT INTO comments (post_id, user_id, comment_text) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([$post_id, $user_id, $comment_text]);
 
-// Kembalikan data komentar yang baru disubmit
-echo json_encode(['username' => $username, 'comment' => $comment]);
+    // Ambil data untuk respons
+    $username = 'User';  // Ganti dengan nama pengguna yang sesuai
+    $data = [
+        'username' => $username,
+        'comment' => $comment_text
+    ];
+
+    echo json_encode($data);
+}
 ?>
 
 <?php
 session_start();
-include('db_connection.php');
+include('ddatabase/db.php');
 
 // Cek apakah user sudah login
 if (!isset($_SESSION['user_id'])) {
     die('Harus login terlebih dahulu');
 }
+// Ambil data dari POST
+$post_id = $_POST['post_id'];
+$comment_id = $_POST['reply_to_comment_id'];
+$reply_text = $_POST['reply_text'];
 
-$comment_id = $_POST['comment_id'];
-$reply = $_POST['reply'];
-$user_id = $_SESSION['user_id'];
+// Validasi dan simpan data balasan ke database
+$query = "INSERT INTO replies (post_id, comment_id, reply_text) VALUES (?, ?, ?)";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("iis", $post_id, $comment_id, $reply_text);
+$stmt->execute();
 
-// Masukkan balasan ke database
-$query = "INSERT INTO replies (comment_id, user_id, reply) VALUES ('$comment_id', '$user_id', '$reply')";
-mysqli_query($conn, $query);
+// Ambil data balasan yang baru disimpan
+$reply_id = $stmt->insert_id;
+$query = "SELECT * FROM replies WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $reply_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$reply = $result->fetch_assoc();
 
-// Ambil username dari user yang memberikan balasan
-$query = "SELECT username FROM users WHERE user_id = '$user_id'";
-$result = mysqli_query($conn, $query);
-$username = mysqli_fetch_assoc($result)['username'];
+// Siapkan data JSON untuk balasan baru
+$response = [
+    'username' => $reply['username'],
+    'reply_text' => $reply['reply_text'],
+    'created_at' => $reply['created_at'],
+    'reply_to_full_name' => $reply['reply_to_full_name']
+];
 
-// Kembalikan data balasan yang baru disubmit
-echo json_encode(['username' => $username, 'reply' => $reply]);
+// Kembalikan data sebagai JSON
+echo json_encode($response);
 ?>
