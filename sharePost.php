@@ -188,7 +188,7 @@ if (isset($_POST['post_id']) && isset($_POST['action'])) {
     <title>Shared Post</title>
     <link rel="stylesheet" href="css/dashboard-1.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="share.css">
+    <link rel="stylesheet" href="css/share.css">
     
 </head>
 <body>
